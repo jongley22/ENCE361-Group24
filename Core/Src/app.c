@@ -7,7 +7,7 @@
 
 #include "app.h"
 #include "gpio.h"
-
+#include "buttons.h"
 void app_main(void)
 {
 	while (1) {
