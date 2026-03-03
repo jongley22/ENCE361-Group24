@@ -92,12 +92,11 @@ int main(void)
   /* USER CODE END 2 */
 
   /* Infinite loop */
-  app_main();
   /* USER CODE BEGIN WHILE */
+app_main();
+    /* USER CODE END WHILE */
 
-  /* USER CODE END WHILE */
-
-  /* USER CODE BEGIN 3 */
+    /* USER CODE BEGIN 3 */
   /* USER CODE END 3 */
 }
 
