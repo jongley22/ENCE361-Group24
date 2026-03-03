@@ -10,7 +10,9 @@
 #include "buttons.h"
 void app_main(void)
 {
+	buttons_init();
 	while (1) {
+		buttons_update();
 		HAL_Delay(200);
 		HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_5);
 
