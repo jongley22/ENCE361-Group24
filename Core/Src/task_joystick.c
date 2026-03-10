@@ -1,7 +1,6 @@
 #include  "task_joystick.h"
 
 #include "adc.h"
-#include <stdint.h>
 
 
 static uint16_t raw_adc[2];
@@ -15,4 +14,7 @@ void joystick_execute(void)
 void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc)
 {
 
+}
+uint16_t* get_raw_adc(void){
+	return raw_adc;
 }
