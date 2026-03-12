@@ -10,18 +10,19 @@
 #include  "stm32c0xx_hal_conf.h"
 #include "task_joystick.h"
 #include <stdio.h>
+#include "usart.h"
 
 
 
 void display_execute(void)
 {
-	char x_str[30];
-	char y_str[30];
+	char x_str[20];
+	char y_str[20];
 
 	uint16_t* raw_adc = get_raw_adc();
 
-	snprintf(x_str, 30, "x = %hu", raw_adc[0]);
-	snprintf(y_str, 30, "y = %hu", raw_adc[1]);
+	snprintf(x_str, 30, "x = %4hu\r\n", raw_adc[0]);
+	snprintf(y_str, 30, "y = %4hu\r\n", raw_adc[1]);
 
 	ssd1306_SetCursor(0, 20);
 	ssd1306_WriteString(x_str, Font_7x10, White);
@@ -30,6 +31,10 @@ void display_execute(void)
 	ssd1306_WriteString(y_str, Font_7x10, White);
 
     ssd1306_UpdateScreen();
+    //HAL_StatusTypeDef HAL_UART_Transmit(UART_HandleTypeDef *huart, const uint8_t *pData, uint16_t Size, uint32_t Timeout)
+    HAL_UART_Transmit(&huart2, x_str, strlen(x_str), 10000);
+    HAL_UART_Transmit(&huart2, y_str, strlen(y_str), 10000);
+
 }
 
 void display_init(void)

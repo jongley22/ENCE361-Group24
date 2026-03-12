@@ -21,6 +21,7 @@
 #include "adc.h"
 #include "dma.h"
 #include "i2c.h"
+#include "usart.h"
 #include "gpio.h"
 #include "app.h"
 
@@ -93,8 +94,9 @@ int main(void)
   MX_DMA_Init();
   MX_ADC1_Init();
   MX_I2C1_Init();
+  MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
-
+  app_main();
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -104,7 +106,6 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
   /* USER CODE END 3 */
-  app_main();
 }
 
 /**
