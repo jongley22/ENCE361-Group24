@@ -6,6 +6,9 @@
 #include "pwm.h"
 static void check_a_button(buttonName_t button_name, rgb_led_t rgb_name);
 
+#define PWM_MAX_DUTY_CYCLE 100
+#define PWM_ADD_DUTY_CYCLE 25
+
 
 void button_polling_init(void)
 {
@@ -26,24 +29,29 @@ void button_polling_execute(void)
 }
 
 
+static void pwm_increase()
+{
+	uint8_t dutyCycle = pwm_getDutyCycle(&htim2, TIM_CHANNEL_3);
+	dutyCycle += PWM_ADD_DUTY_CYCLE;
+	if (dutyCycle > PWM_MAX_DUTY_CYCLE) {
+		dutyCycle = 0;
+	}
+	pwm_setDutyCycle(&htim2, TIM_CHANNEL_3, dutyCycle);
+}
+
+
 static void check_a_button(buttonName_t button_name, rgb_led_t rgb_name)
 {
 	buttonState_t state = buttons_checkButton(button_name);
 
 	if(state == PUSHED){
-		if(button_name == UP){
-			uint8_t currentduty = pwm_getDutyCycle(&htim2, TIM_CHANNEL_3);
-			if currentduty > max
-			{
-
-			//reset duty
-			}
-			//incrementing duty
-			pwm_setDutyCycle(&htim2, TIM_CHANNEL_3, currentduty + 20);
-
+		if(button_name == UP) {
+			pwm_increase();
 		} else {
-		rgb_led_on(rgb_name);
-	}}
-	else if(state == RELEASED)
+			rgb_led_on(rgb_name);
+		}
+	}
+	else if(state == RELEASED) {
 		rgb_led_off(rgb_name);
+	}
 }
