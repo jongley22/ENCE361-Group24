@@ -8,7 +8,7 @@
 #include "pwm.h"
 
 #define PWM_MAX_DUTY_CYCLE 100
-#define PWM_ADD_DUTY_CYCLE 25
+#define PWM_ADD_DUTY_CYCLE 10
 
 
 static void check_a_button(buttonName_t button_name, rgb_led_t rgb_name);
