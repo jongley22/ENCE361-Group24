@@ -6,11 +6,15 @@
  */
 
 #include "app.h"
+
 #include "task_button_polling.h"
 #include "task_led_blinking.h"
 #include "task_joystick.h"
-#include <stdint.h>
 #include "task_display.h"
+
+#include "stm32c0xx_hal.h"
+
+#include <stdint.h>
 
 #define TICK_FREQUENCY_HZ 1000
 #define HZ_TO_TICKS(FREQUENCY_HZ) (TICK_FREQUENCY_HZ/FREQUENCY_HZ)

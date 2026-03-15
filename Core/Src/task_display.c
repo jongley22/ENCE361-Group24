@@ -11,6 +11,7 @@
 #include "task_joystick.h"
 #include "usart.h"
 
+#include <string.h>
 #include <stdbool.h>
 #include <stdio.h>
 
@@ -20,8 +21,8 @@ static bool serialIsDebugging = true;
 
 void display_execute(void)
 {
-    char x_str[20];
-    char y_str[20];
+    unsigned char x_str[20];
+    unsigned char y_str[20];
 
     uint16_t x = get_joystick_x();
     uint16_t y = get_joystick_y();
