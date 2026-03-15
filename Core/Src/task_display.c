@@ -23,10 +23,11 @@ void display_execute(void)
     char x_str[20];
     char y_str[20];
 
-    uint16_t* raw_adc = get_joystick_raw_adc();
+    uint16_t x = get_joystick_x();
+    uint16_t y = get_joystick_y();
 
-    snprintf(x_str, 30, "x = %4hu\r\n", raw_adc[1]);
-    snprintf(y_str, 30, "y = %4hu\r\n", raw_adc[0]);
+    snprintf(x_str, 30, "x = %4hu\r\n", x);
+    snprintf(y_str, 30, "y = %4hu\r\n", y);
 
     ssd1306_SetCursor(0, 20);
     ssd1306_WriteString(x_str, Font_7x10, White);

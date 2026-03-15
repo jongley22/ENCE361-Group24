@@ -18,6 +18,12 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc)
 {
 }
 
-uint16_t* get_joystick_raw_adc(void){
-    return raw_adc;
+uint16_t get_joystick_x(void)
+{
+    return raw_adc[1];
+}
+
+uint16_t get_joystick_y(void)
+{
+    return raw_adc[0];
 }

@@ -12,7 +12,8 @@
 
 
 void joystick_execute(void);
-uint16_t* get_joystick_raw_adc(void);
+uint16_t get_joystick_x(void);
+uint16_t get_joystick_y(void);
 
 
 #endif /* INC_TASK_JOYSTICK_H_ */
