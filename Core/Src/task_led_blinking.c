@@ -4,5 +4,5 @@
 
 void led_blinking_execute(void)
 {
-	HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_5);
+    HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_5);
 }

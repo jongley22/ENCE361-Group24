@@ -5,6 +5,7 @@
 
 void display_execute(void);
 void display_init(void);
+void toggle_serial_debug(void);
 
 
 #endif /* INC_TASK_DISPLAY_H_ */
