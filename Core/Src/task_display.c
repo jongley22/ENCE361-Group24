@@ -16,7 +16,7 @@
 #include <stdio.h>
 
 
-static bool serialIsDebugging = true;
+static bool serialIsDebugging = false;
 
 
 void display_execute(void)
