@@ -47,7 +47,7 @@ void app_main(void)
 
     while (1) {
         uint32_t ticks = HAL_GetTick();
-        if(ticks > ButtonPollingNextRun)
+        if (ticks > ButtonPollingNextRun)
         {
             button_polling_execute();
             ButtonPollingNextRun += BUTTON_POLLING_PERIOD_TICKS;

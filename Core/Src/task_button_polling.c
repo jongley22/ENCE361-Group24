@@ -58,7 +58,7 @@ static void check_a_button(buttonName_t button_name, rgb_led_t rgb_name)
         if (button_name == DOWN) {
             toggle_serial_debug();
         }
-    } else if(state == RELEASED) {
+    } else if (state == RELEASED) {
         rgb_led_off(rgb_name);
     }
 }
