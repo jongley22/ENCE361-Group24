@@ -5,10 +5,11 @@
  *      Author: jon27
  */
 #include "task_display.h"
+#include "task_joystick.h"
+
 #include "ssd1306_conf.h"
 #include "ssd1306_fonts.h"
 #include "stm32c0xx_hal_conf.h"
-#include "task_joystick.h"
 #include "usart.h"
 
 #include <string.h>
@@ -62,6 +63,7 @@ static void render_joystick_values(
     snprintf(direction_str, lengths, "x,y=(%s, %s)      \r\n", left_right, up_down);
 
 }
+
 
 void display_execute(void)
 {

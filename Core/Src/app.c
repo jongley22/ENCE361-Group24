@@ -4,7 +4,6 @@
  *  Created on: 24/02/2026
  *      Author: jon27
  */
-
 #include "app.h"
 
 #include "task_button_polling.h"

@@ -1,3 +1,9 @@
+/*
+ * task_joystick.c
+ *
+ *  Created on: 10/03/2026
+ *      Author: jon27
+ */
 #include  "task_joystick.h"
 
 #include "adc.h"
@@ -9,7 +15,7 @@
 
 
 /*
- * Array with joystick y,x
+ * Array with joystick y, x
  */
 static uint16_t raw_adc[2];
 
