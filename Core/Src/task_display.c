@@ -58,7 +58,7 @@ static void render_joystick_values(
     }
 
     snprintf(xy_str, lengths, "x,y=(%4hu, %4hu)\r\n", x, y);
-    snprintf(percent_str, lengths, "x,y=(%4hd, %4hd)\r\n", percent_x, percent_y);
+    snprintf(percent_str, lengths, "x,y=(%4hd%%,%4hd%%)\r\n", percent_x, percent_y);
     snprintf(direction_str, lengths, "x,y=(%s, %s)      \r\n", left_right, up_down);
 
 }
