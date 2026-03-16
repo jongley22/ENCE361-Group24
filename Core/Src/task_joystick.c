@@ -8,10 +8,10 @@
 
 #include "adc.h"
 
-#define JOYSTICK_X_MIN 200
-#define JOYSTICK_Y_MIN 240
-#define JOYSTICK_X_MAX 4095
-#define JOYSTICK_Y_MAX 4095
+#define JOYSTICK_X_MIN 470
+#define JOYSTICK_Y_MIN 285
+#define JOYSTICK_X_MAX 3940
+#define JOYSTICK_Y_MAX 4075
 
 
 /*
@@ -39,13 +39,24 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc)
 
 uint16_t get_joystick_x(void)
 {
-    return raw_adc[1];
+	if (raw_adc[1] > JOYSTICK_X_MAX) {
+		return JOYSTICK_X_MAX;
+	} else if (raw_adc[1] < JOYSTICK_X_MIN) {
+		return JOYSTICK_X_MIN;
+	} else {
+		return raw_adc[1];
+	}
 }
-
 
 uint16_t get_joystick_y(void)
 {
-    return raw_adc[0];
+	if (raw_adc[0] > JOYSTICK_Y_MAX) {
+		return JOYSTICK_Y_MAX;
+	} else if (raw_adc[0] < JOYSTICK_Y_MIN) {
+		return JOYSTICK_Y_MIN;
+	} else {
+		return raw_adc[0];
+	}
 }
 
 
