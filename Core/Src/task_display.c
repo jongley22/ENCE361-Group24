@@ -18,27 +18,32 @@
 
 static bool serialIsDebugging = false;
 
+static void render_joystick_values(
+    char* xy_str,
+    char* percent_str,
+    char* direction_str,
+    uint16_t lengths
+);
 
-void display_execute(void)
+
+static void render_joystick_values(
+    char* xy_str,
+    char* percent_str,
+    char* direction_str,
+    uint16_t lengths)
 {
-    char xy_str[40];
-    char percent_str[40];
-    char direction_str[40];
-
     char left_right[10];
     char up_down[10];
 
     uint16_t x = get_joystick_x();
     uint16_t y = get_joystick_y();
 
-    int16_t diff_x = (int16_t)((JOYSTICK_X_MAX - JOYSTICK_X_MIN) / 2);
-    int16_t diff_y = (int16_t)((JOYSTICK_Y_MAX - JOYSTICK_Y_MIN) / 2);
-    int16_t percent_x = ((x - JOYSTICK_X_MIN - diff_x) * 100) / diff_x;
-    int16_t percent_y = ((y - JOYSTICK_Y_MIN - diff_y) * 100) / diff_y;
+    int16_t percent_x = get_joystick_x_percent();
+    int16_t percent_y = get_joystick_y_percent();
 
     if (percent_x < 10 && percent_x > -10) {
         snprintf(left_right, 10, "rest");
-	} else if (percent_x > 0) {
+    } else if (percent_x > 0) {
         snprintf(left_right, 10, "left");
     } else {
         snprintf(left_right, 10, "right");
@@ -52,9 +57,20 @@ void display_execute(void)
         snprintf(up_down, 10, "up");
     }
 
-    snprintf(xy_str, 40, "x,y=(%4hu, %4hu)\r\n", x, y);
-    snprintf(percent_str, 40, "x,y=(%4hd, %4hd)\r\n", percent_x, percent_y);
-    snprintf(direction_str, 40, "x,y=(%s, %s)      \r\n", left_right, up_down);
+    snprintf(xy_str, lengths, "x,y=(%4hu, %4hu)\r\n", x, y);
+    snprintf(percent_str, lengths, "x,y=(%4hd, %4hd)\r\n", percent_x, percent_y);
+    snprintf(direction_str, lengths, "x,y=(%s, %s)      \r\n", left_right, up_down);
+
+}
+
+void display_execute(void)
+{
+    uint16_t lengths = 40;
+    char xy_str[lengths];
+    char percent_str[lengths];
+    char direction_str[lengths];
+
+    render_joystick_values(xy_str, percent_str, direction_str, lengths);
 
     ssd1306_SetCursor(0, 10);
     ssd1306_WriteString(xy_str, Font_7x10, White);
