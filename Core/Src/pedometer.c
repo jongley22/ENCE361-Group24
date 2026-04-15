@@ -7,16 +7,6 @@ static uint32_t stepCount = INITIAL_STEPS;
 static float    distance  = INITIAL_DISTANCE;
 static uint32_t stepGoal  = DEFAULT_GOAL_STEPS;
 
-/**
-Steps and distance zeroed; goal restored to default 1,000.
- */
-
-void Pedometer_Init(void)
-{
-    stepCount = INITIAL_STEPS;
-    distance  = INITIAL_DISTANCE;
-    stepGoal  = DEFAULT_GOAL_STEPS;
-}
 
 uint32_t Pedometer_GetSteps(void)
 {

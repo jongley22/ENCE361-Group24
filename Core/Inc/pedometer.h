@@ -7,7 +7,6 @@
 
 
 /* Function prototypes */
-void     Pedometer_Init(void);
 uint32_t Pedometer_GetSteps(void);
 float    Pedometer_GetDistance(void);
 uint32_t Pedometer_GetGoal(void);
