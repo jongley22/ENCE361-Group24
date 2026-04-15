@@ -1,0 +1,20 @@
+/*
+ * app.h
+ *
+ *  Created on: 24/02/2026
+ *      Author: jon27
+ */
+
+#ifndef INC_TASK_SCHEDULER_H
+#define INC_TASK_SCHEDULER_H
+
+
+void scheduler_run_tasks(void);
+void scheduler_add_task(
+    void(*init_func)(void),
+    void(*execute_func)(void),
+    uint16_t frequency
+);
+
+
+#endif /* INC_TASK_SCHEDULER_H_ */

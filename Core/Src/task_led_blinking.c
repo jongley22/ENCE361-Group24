@@ -9,6 +9,11 @@
 #include "gpio.h"
 
 
+void led_blinking_init(void)
+{
+}
+
+
 void led_blinking_execute(void)
 {
     HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_5);

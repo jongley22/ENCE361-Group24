@@ -11,6 +11,7 @@
 #include <stdint.h>
 
 
+void joystick_init(void);
 void joystick_execute(void);
 
 uint16_t get_joystick_x(void);

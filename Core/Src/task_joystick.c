@@ -26,6 +26,11 @@ static int16_t calculate_joystick_percentage(
 );
 
 
+void joystick_init(void)
+{
+}
+
+
 void joystick_execute(void)
 {
     HAL_ADC_Start_DMA(&hadc1, (uint32_t*)raw_adc, 2);
