@@ -1,0 +1,17 @@
+#ifndef PEDOMETER_H
+#define PEDOMETER_H
+
+#include <stdint.h>
+
+/* Default values */
+
+
+/* Function prototypes */
+void     Pedometer_Init(void);
+uint32_t Pedometer_GetSteps(void);
+float    Pedometer_GetDistance(void);
+uint32_t Pedometer_GetGoal(void);
+void     Pedometer_AddSteps(uint32_t steps);
+void     Pedometer_RemoveSteps(uint32_t steps);
+
+#endif /* PEDOMETER_H */

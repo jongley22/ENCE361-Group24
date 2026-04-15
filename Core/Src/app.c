@@ -10,7 +10,7 @@
 #include "task_led_blinking.h"
 #include "task_joystick.h"
 #include "task_display.h"
-
+#include "pedometer.h"
 #include "stm32c0xx_hal.h"
 
 #include <stdint.h>
@@ -37,6 +37,7 @@ static uint32_t DisplayNextRun = 0;
 
 void app_main(void)
 {
+	Pedometer_Init();
     button_polling_init();
     display_init();
     ButtonPollingNextRun = HAL_GetTick() + BUTTON_POLLING_PERIOD_TICKS;

@@ -24,7 +24,7 @@
 #include "tim.h"
 #include "usart.h"
 #include "gpio.h"
-
+#include "pedometer.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "app.h"
@@ -96,6 +96,7 @@ int main(void)
   MX_I2C1_Init();
   MX_USART2_UART_Init();
   MX_TIM2_Init();
+
   /* USER CODE BEGIN 2 */
   app_main();
   /* USER CODE END 2 */
