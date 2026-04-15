@@ -6,9 +6,11 @@
  */
 #include "task_display.h"
 #include "task_joystick.h"
+#include "pedometer.h"
 
 #include "ssd1306_conf.h"
 #include "ssd1306_fonts.h"
+#include "ssd1306.h"
 #include "stm32c0xx_hal_conf.h"
 #include "usart.h"
 
@@ -18,6 +20,8 @@
 
 
 static bool serialIsDebugging = false;
+static bool testModeActive    = false;
+
 
 static void render_joystick_values(
     char* xy_str,
@@ -25,6 +29,7 @@ static void render_joystick_values(
     char* direction_str,
     uint16_t lengths
 );
+static void render_test_mode(void);
 
 
 static void render_joystick_values(
@@ -58,15 +63,43 @@ static void render_joystick_values(
         snprintf(up_down, 10, "up");
     }
 
-    snprintf(xy_str, lengths, "x,y=(%4hu, %4hu)\r\n", x, y);
-    snprintf(percent_str, lengths, "x,y=(%4hd%%,%4hd%%)\r\n", percent_x, percent_y);
-    snprintf(direction_str, lengths, "x,y=(%s, %s)      \r\n", left_right, up_down);
+    snprintf(xy_str,        lengths, "x,y=(%4hu, %4hu)\r\n",    x, y);
+    snprintf(percent_str,   lengths, "x,y=(%4hd%%,%4hd%%)\r\n", percent_x, percent_y);
+    snprintf(direction_str, lengths, "x,y=(%s, %s)      \r\n",  left_right, up_down);
+}
 
+
+static void render_test_mode(void)
+{
+    char steps_str[24];
+    char goal_str[24];
+
+    snprintf(steps_str, sizeof(steps_str), "Steps: %lu", Pedometer_GetSteps());
+    snprintf(goal_str,  sizeof(goal_str),  "Goal:  %lu", Pedometer_GetGoal());
+
+    ssd1306_Fill(Black);
+
+    ssd1306_SetCursor(0, 10);
+    ssd1306_WriteString("-- TEST MODE --", Font_7x10, White);
+
+    ssd1306_SetCursor(0, 25);
+    ssd1306_WriteString(steps_str, Font_7x10, White);
+
+    ssd1306_SetCursor(0, 40);
+    ssd1306_WriteString(goal_str, Font_7x10, White);
+
+    ssd1306_UpdateScreen();
 }
 
 
 void display_execute(void)
 {
+    if (testModeActive)
+    {
+        render_test_mode();
+        return;
+    }
+
     uint16_t lengths = 40;
     char xy_str[lengths];
     char percent_str[lengths];
@@ -86,8 +119,8 @@ void display_execute(void)
     ssd1306_UpdateScreen();
 
     if (serialIsDebugging) {
-        HAL_UART_Transmit(&huart2, xy_str, strlen(xy_str), 10000);
-        HAL_UART_Transmit(&huart2, percent_str, strlen(percent_str), 10000);
+        HAL_UART_Transmit(&huart2, xy_str,        strlen(xy_str),        10000);
+        HAL_UART_Transmit(&huart2, percent_str,   strlen(percent_str),   10000);
         HAL_UART_Transmit(&huart2, direction_str, strlen(direction_str), 10000);
     }
 }
@@ -96,12 +129,22 @@ void display_execute(void)
 void display_init(void)
 {
     ssd1306_Init();
-    ssd1306_SetCursor(0,0);
+    ssd1306_SetCursor(0, 0);
     ssd1306_WriteString("Hello world!", Font_7x10, White);
+    ssd1306_UpdateScreen();
 }
 
 
 void toggle_serial_debug(void)
 {
     serialIsDebugging = !serialIsDebugging;
+}
+
+void display_toggle_test_mode(void)
+{
+    testModeActive = !testModeActive;
+}
+bool display_is_test_mode(void)             /* M2.3 */
+{
+    return testModeActive;
 }

@@ -13,13 +13,17 @@
 #include "task_joystick.h"
 #include "task_display.h"
 
+#include "stm32c0xx_hal.h"
+
+#include <stdint.h>
+
+#define TICK_FREQUENCY_HZ 1000
+#define HZ_TO_TICKS(FREQUENCY_HZ) (TICK_FREQUENCY_HZ/FREQUENCY_HZ)
+
 #define BUTTON_POLLING_FREQUENCY_HZ 50
 #define LED_BLINKING_FREQUENCY_HZ 2
 #define JOYSTICK_FREQUENCY_HZ 50
 #define DISPLAY_FREQUENCY_HZ 4
-
-
-static void add_all_tasks(void);
 
 
 void app_main(void)

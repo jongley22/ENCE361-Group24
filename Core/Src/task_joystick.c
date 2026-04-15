@@ -5,6 +5,7 @@
  *      Author: jon27
  */
 #include  "task_joystick.h"
+#include <stdlib.h>
 
 #include "adc.h"
 
@@ -92,5 +93,8 @@ static int16_t calculate_joystick_percentage(
 {
     int16_t diff = (int16_t)((max - min) / 2);
     int16_t percent = ((value - min - diff) * 100) / diff;
+    if (abs(percent) < 10){
+    	return 0;
+    }
     return percent;
 }
