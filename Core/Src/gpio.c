@@ -61,7 +61,7 @@ void MX_GPIO_Init(void)
   HAL_GPIO_WritePin(LD1_GPIO_Port, LD1_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOD, RGB_GREEN_Pin|RGB_RED_Pin|RGB_BLUE_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOD, BUZZER_Pin|RGB_GREEN_Pin|RGB_RED_Pin|RGB_BLUE_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pins : SW1_Pin SW2_Pin SW3_Pin */
   GPIO_InitStruct.Pin = SW1_Pin|SW2_Pin|SW3_Pin;
@@ -102,8 +102,8 @@ void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_PULLDOWN;
   HAL_GPIO_Init(JOYSTICK_CLICK_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : RGB_GREEN_Pin RGB_RED_Pin RGB_BLUE_Pin */
-  GPIO_InitStruct.Pin = RGB_GREEN_Pin|RGB_RED_Pin|RGB_BLUE_Pin;
+  /*Configure GPIO pins : BUZZER_Pin RGB_GREEN_Pin RGB_RED_Pin RGB_BLUE_Pin */
+  GPIO_InitStruct.Pin = BUZZER_Pin|RGB_GREEN_Pin|RGB_RED_Pin|RGB_BLUE_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
