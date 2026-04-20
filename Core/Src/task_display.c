@@ -21,7 +21,7 @@
 static uint32_t POT_get_position(void)
 {
 	// TODO: Replace this placeholder with real
-	return 1024;
+	return 4000;
 }
 
 static bool serialIsDebugging = false;
@@ -67,7 +67,7 @@ void display_joystick_short_press(void)
 
 void display_unit_switch(void)
 {
-	if(!testModeActive) {
+	if(!testModeActive && !goalSetModeActive) {
 		if(currentDisplayScreen == CURRENT_STEPS) {
 			stepsUnitIsGoal = !stepsUnitIsGoal;
 		} else if(currentDisplayScreen == DISTANCE_TRAVELLED) {
@@ -78,7 +78,7 @@ void display_unit_switch(void)
 
 void next_display_screen(bool isLeft)
 {
-	if(!testModeActive) {
+	if(!testModeActive && !goalSetModeActive) {
 		if(isLeft) {
 			currentDisplayScreen++;
 			if(currentDisplayScreen > GOAL_PROGRESS) {
@@ -133,21 +133,22 @@ void display_execute(void)
 
     if(currentDisplayScreen == CURRENT_STEPS) {
 	    if(stepsUnitIsGoal) {
-		    snprintf(line1, sizeof(line1), "Steps: %lu", Pedometer_GetSteps());
-	    } else {
 			uint32_t steps = Pedometer_GetSteps();
 			uint32_t goal = Pedometer_GetGoal();
 			uint32_t prog_perc = (steps * 100) / goal;
 		    snprintf(line1, sizeof(line1), "Steps: %lu%% of goal", prog_perc);
+	    } else {
+		    snprintf(line1, sizeof(line1), "Steps: %lu", Pedometer_GetSteps());
 	    }
 	    snprintf(line2, sizeof(line2), "");
     } else if(currentDisplayScreen == DISTANCE_TRAVELLED) {
-	    float dist = (((float)Pedometer_GetSteps()) * 0.8) / 1000;
+	    uint32_t dist = ((Pedometer_GetSteps() * 80) / 100);
 	    if(distanceUnitIsM) {
-		    snprintf(line1, sizeof(line1), "Dist: %fkm", dist);
+	    	dist /= 1000;
+		    snprintf(line1, sizeof(line1), "Dist: %lu km", dist);
 	    } else {
-		    dist *= 1093.613f;
-		    snprintf(line1, sizeof(line1), "Dist: %fyards", dist);
+		    dist = (dist * 10936) / 10000;
+		    snprintf(line1, sizeof(line1), "Dist: %lu yards", dist);
 	    }
 	    snprintf(line2, sizeof(line2), "");
     } else if(currentDisplayScreen == GOAL_PROGRESS) {
@@ -164,13 +165,14 @@ void display_execute(void)
 		    snprintf(line2, sizeof(line2), "Prog: %lu%%", prog_perc);
 	    }
     }
+    ssd1306_Fill(Black);
+
     ssd1306_SetCursor(0, 10);
     ssd1306_WriteString(line1, Font_7x10, White);
 
     ssd1306_SetCursor(0, 25);
     ssd1306_WriteString(line2, Font_7x10, White);
 
-    ssd1306_Fill(Black);
     ssd1306_UpdateScreen();
 }
 

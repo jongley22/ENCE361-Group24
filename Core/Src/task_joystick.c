@@ -28,8 +28,6 @@ static int16_t calculate_joystick_percentage(
 );
 
 static void joystick_normal_mode_toggle_run(void);
-static bool normal_mode_pause = true;
-
 
 void joystick_init(void)
 {
@@ -50,24 +48,28 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc)
 
 static void joystick_normal_mode_toggle_run(void)
 {
-	uint16_t x = get_joystick_x_percent();
-	uint16_t y = get_joystick_y_percent();
-	if(x == 0 && y == 0) {
-		normal_mode_pause = false;
-	} else if(!normal_mode_pause) {
-		normal_mode_pause = true;
-		if(x < 0) {
+	static bool normal_joystick_clicked = true;
+	int16_t x = get_joystick_x_percent();
+	int16_t y = get_joystick_y_percent();
+	if(x < 10 && x > -10 && y < 10 && y > -10) {
+		normal_joystick_clicked = false;
+	} else if(!normal_joystick_clicked) {
+		if(x < -80) {
 			// display left
+			normal_joystick_clicked = true;
 			next_display_screen(true);
-		} else {
+		} else if(x > 80) {
 			// display right
+			normal_joystick_clicked = true;
 			next_display_screen(false);
 		}
-		if(y > 0) {
+		if(y < -80) {
 			// up
+			normal_joystick_clicked = true;
 			display_unit_switch();
-		} else {
+		} else if(y > 80) {
 			// down
+			normal_joystick_clicked = true;
 		}
 	}
 }
