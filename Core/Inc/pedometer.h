@@ -8,10 +8,9 @@
 
 /* Function prototypes */
 uint32_t Pedometer_GetSteps(void);
-void Pedometer_SetGoal(uint32_t);
 float    Pedometer_GetDistance(void);
 uint32_t Pedometer_GetGoal(void);
 void     Pedometer_AddSteps(uint32_t steps);
 void     Pedometer_RemoveSteps(uint32_t steps);
-
+void 	 Pedometer_SetGoal(uint32_t goal);
 #endif /* PEDOMETER_H */
