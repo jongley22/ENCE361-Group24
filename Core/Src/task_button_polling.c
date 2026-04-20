@@ -18,8 +18,9 @@
 #include <stdlib.h>
 #include "stm32c0xx_hal.h"
 
-#define CPU_TICK_FREQUENCY_HZ 1000
+#include <stdbool.h>
 
+#define CPU_TICK_FREQUENCY_HZ 1000
 #define SW4_STEPS_INCREMENT 7U
 #define PWM_MAX_DUTY_CYCLE 100
 #define PWM_ADD_DUTY_CYCLE 10
@@ -40,6 +41,8 @@ static uint32_t joystickLastClicked;
 static bool joystick_clicked = false;
 
 static uint32_t joystickNextRun = 0;
+static bool joystickReturned = true;
+
 void button_polling_init(void)
 {
     buttons_init();
@@ -90,21 +93,30 @@ static void joystick_test_mode_update(void)
 {
     uint32_t now = HAL_GetTick();
     if (now < joystickNextRun) {
-        return;     /* not time yet */
+        return;
     }
     joystickNextRun = now + TEST_MODE_JOYSTICK_PERIOD_TICKS;
 
     int16_t percent = get_joystick_y_percent();
 
+    /* joystick returned to rest — reset flag */
     if (abs(percent) <= JOYSTICK_DEADZONE_PERCENT) {
+        joystickReturned = true;
         return;
     }
 
     uint32_t steps;
-    if (abs(percent) < JOYSTICK_STEP_THRESHOLD_PERCENT) {
-        steps = 1;      /* low displacement — single step (point d) */
-    } else {
-        /* above 50% scale from 1-8 */
+    if (abs(percent) < JOYSTICK_STEP_THRESHOLD_PERCENT)
+    {
+        if (!joystickReturned) {
+            return;     /* must return to rest before next single step */
+        }
+        steps = 1;
+        joystickReturned = false;
+    }
+    else
+    {
+        /* high displacement — continuous, no one shot restriction */
         steps = (uint32_t)(((abs(percent) - JOYSTICK_STEP_THRESHOLD_PERCENT) * JOYSTICK_MAX_STEPS_PER_CALL) / JOYSTICK_STEP_THRESHOLD_PERCENT);
         if (steps < 1) steps = 1;
     }
@@ -138,14 +150,14 @@ static void check_a_button(buttonName_t button_name, rgb_led_t rgb_name)
             pwm_increase();
         }
     }
-    else if (button_name == DOWN)           /* M2.3 — double tap detection */
+    else if (button_name == DOWN)           /*  double tap detection */
     {
         if (state == PUSHED)
         {
             uint32_t now = HAL_GetTick();
             if ((now - lastDownPressTime) <= DOUBLE_TAP_WINDOW_MS) {
                 display_toggle_test_mode();
-                lastDownPressTime = 0;      /* reset so triple tap doesn't re-trigger */
+                lastDownPressTime = 0;
             } else {
                 lastDownPressTime = now;
             }
