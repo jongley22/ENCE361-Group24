@@ -4,10 +4,11 @@
  *  Created on: 10/03/2026
  *      Author: jon27
  */
-#include  "task_joystick.h"
+#include "task_joystick.h"
 #include <stdlib.h>
 
 #include "adc.h"
+#include "task_display.h"
 
 #define JOYSTICK_X_MIN 470
 #define JOYSTICK_Y_MIN 285
@@ -26,6 +27,7 @@ static int16_t calculate_joystick_percentage(
     uint16_t max
 );
 
+static void joystick_normal_mode_toggle_run(void);
 
 void joystick_init(void)
 {
@@ -35,6 +37,7 @@ void joystick_init(void)
 void joystick_execute(void)
 {
     HAL_ADC_Start_DMA(&hadc1, (uint32_t*)raw_adc, 2);
+    joystick_normal_mode_toggle_run();
 }
 
 
@@ -42,6 +45,34 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc)
 {
 }
 
+
+static void joystick_normal_mode_toggle_run(void)
+{
+	static bool normal_joystick_clicked = true;
+	int16_t x = get_joystick_x_percent();
+	int16_t y = get_joystick_y_percent();
+	if(x < 10 && x > -10 && y < 10 && y > -10) {
+		normal_joystick_clicked = false;
+	} else if(!normal_joystick_clicked) {
+		if(x < -80) {
+			// display left
+			normal_joystick_clicked = true;
+			next_display_screen(true);
+		} else if(x > 80) {
+			// display right
+			normal_joystick_clicked = true;
+			next_display_screen(false);
+		}
+		if(y < -80) {
+			// up
+			normal_joystick_clicked = true;
+			display_unit_switch();
+		} else if(y > 80) {
+			// down
+			normal_joystick_clicked = true;
+		}
+	}
+}
 
 uint16_t get_joystick_x(void)
 {

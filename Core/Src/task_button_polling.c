@@ -4,19 +4,23 @@
  *  Created on: 10/03/2026
  *      Author: jon27
  */
+
 #include "task_button_polling.h"
 
 #include "task_display.h"
-
 #include "buttons.h"
 #include "rgb.h"
 #include "tim.h"
 #include "pwm.h"
 #include "pedometer.h"
 #include "task_joystick.h"
+
 #include <stdlib.h>
+#include "stm32c0xx_hal.h"
+
 #include <stdbool.h>
 
+#define CPU_TICK_FREQUENCY_HZ 1000
 #define SW4_STEPS_INCREMENT 7U
 #define PWM_MAX_DUTY_CYCLE 100
 #define PWM_ADD_DUTY_CYCLE 10
@@ -25,10 +29,16 @@
 #define JOYSTICK_DEADZONE_PERCENT       10
 #define JOYSTICK_STEP_THRESHOLD_PERCENT  50   /* below this, always 1 step per call */
 #define TEST_MODE_JOYSTICK_PERIOD_TICKS     100U /* 10Hz = every 100ms */
+#define JOYSTICK_LONG_HOLD_SEC 1
+#define JOYSTICK_LONG_HOLD_TICKS (CPU_TICK_FREQUENCY_HZ * JOYSTICK_LONG_HOLD_SEC)
+
 static uint32_t lastDownPressTime = 0;  /* M2.3 */
 static void joystick_test_mode_update(void);
 static void check_a_button(buttonName_t button_name, rgb_led_t rgb_name);
 static void pwm_increase(void);
+
+static uint32_t joystickLastClicked;
+static bool joystick_clicked = false;
 
 static uint32_t joystickNextRun = 0;
 static bool joystickReturned = true;
@@ -38,6 +48,7 @@ void button_polling_init(void)
     buttons_init();
     rgb_colour_all_on();
     HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_3);
+    joystickLastClicked = HAL_GetTick();
 }
 
 
@@ -51,6 +62,20 @@ void button_polling_execute(void)
     if (display_is_test_mode()) {
         joystick_test_mode_update();
     }
+    buttonState_t state = buttons_checkButton(JOYSTICK_CLICK);
+    if(state == PUSHED) {
+	    if(!joystick_clicked) {
+		    joystick_clicked = true;
+		    joystickLastClicked = HAL_GetTick();
+	    }
+    } else if(state == RELEASED) {
+	    joystick_clicked = false;
+	    if(HAL_GetTick() - joystickLastClicked > JOYSTICK_LONG_HOLD_TICKS) {
+		    display_joystick_long_press();
+	    } else {
+		    display_joystick_short_press();
+	    }
+    }
 }
 
 
@@ -63,6 +88,7 @@ static void pwm_increase(void)
     }
     pwm_setDutyCycle(&htim2, TIM_CHANNEL_3, dutyCycle);
 }
+
 static void joystick_test_mode_update(void)
 {
     uint32_t now = HAL_GetTick();
@@ -113,6 +139,7 @@ static void joystick_test_mode_update(void)
         Pedometer_RemoveSteps(steps);
     }
 }
+
 static void check_a_button(buttonName_t button_name, rgb_led_t rgb_name)
 {
     buttonState_t state = buttons_checkButton(button_name);
@@ -140,8 +167,7 @@ static void check_a_button(buttonName_t button_name, rgb_led_t rgb_name)
             rgb_led_off(rgb_name);
         }
     }
-    else if (button_name == LEFT)
-    {
+    else if (button_name == LEFT) {
         if (state == PUSHED) {
             rgb_led_on(rgb_name);
             uint32_t goal    = Pedometer_GetGoal();

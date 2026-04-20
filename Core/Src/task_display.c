@@ -18,54 +18,80 @@
 #include <stdbool.h>
 #include <stdio.h>
 
+static uint32_t POT_get_position(void)
+{
+	// TODO: Replace this placeholder with real
+	return 4000;
+}
 
 static bool serialIsDebugging = false;
 static bool testModeActive    = false;
 
+static bool distanceUnitIsM = true;
+static bool stepsUnitIsGoal = false;
 
-static void render_joystick_values(
-    char* xy_str,
-    char* percent_str,
-    char* direction_str,
-    uint16_t lengths
-);
+static bool goalSetModeActive = false;
+static uint32_t newGoal;
+
+
+typedef enum {
+	CURRENT_STEPS=0,
+	DISTANCE_TRAVELLED,
+	GOAL_PROGRESS
+} DisplayScreen;
+
+static DisplayScreen currentDisplayScreen = CURRENT_STEPS;
+
+
 static void render_test_mode(void);
 
 
-static void render_joystick_values(
-    char* xy_str,
-    char* percent_str,
-    char* direction_str,
-    uint16_t lengths)
+void display_joystick_long_press(void)
 {
-    char left_right[10];
-    char up_down[10];
+	if(goalSetModeActive) {
+		Pedometer_SetGoal(newGoal);
+		goalSetModeActive = false;
+	} else {
+		if(currentDisplayScreen == GOAL_PROGRESS) {
+			goalSetModeActive = true;
+		}
+	}
+}
 
-    uint16_t x = get_joystick_x();
-    uint16_t y = get_joystick_y();
+void display_joystick_short_press(void)
+{
+	if(goalSetModeActive) {
+		goalSetModeActive = false;
+	}
+}
 
-    int16_t percent_x = get_joystick_x_percent();
-    int16_t percent_y = get_joystick_y_percent();
+void display_unit_switch(void)
+{
+	if(!testModeActive && !goalSetModeActive) {
+		if(currentDisplayScreen == CURRENT_STEPS) {
+			stepsUnitIsGoal = !stepsUnitIsGoal;
+		} else if(currentDisplayScreen == DISTANCE_TRAVELLED) {
+			distanceUnitIsM = !distanceUnitIsM;
+		}
+	}
+}
 
-    if (percent_x < 10 && percent_x > -10) {
-        snprintf(left_right, 10, "rest");
-    } else if (percent_x > 0) {
-        snprintf(left_right, 10, "left");
-    } else {
-        snprintf(left_right, 10, "right");
-    }
-
-    if (percent_y < 10 && percent_y > -10) {
-        snprintf(up_down, 10, "rest");
-    } else if (percent_y > 0) {
-        snprintf(up_down, 10, "down");
-    } else {
-        snprintf(up_down, 10, "up");
-    }
-
-    snprintf(xy_str,        lengths, "x,y=(%4hu, %4hu)\r\n",    x, y);
-    snprintf(percent_str,   lengths, "x,y=(%4hd%%,%4hd%%)\r\n", percent_x, percent_y);
-    snprintf(direction_str, lengths, "x,y=(%s, %s)      \r\n",  left_right, up_down);
+void next_display_screen(bool isLeft)
+{
+	if(!testModeActive && !goalSetModeActive) {
+		if(isLeft) {
+			currentDisplayScreen++;
+			if(currentDisplayScreen > GOAL_PROGRESS) {
+				currentDisplayScreen = CURRENT_STEPS;
+			}
+		} else {
+			if(currentDisplayScreen == CURRENT_STEPS) {
+				currentDisplayScreen = GOAL_PROGRESS;
+			} else {
+				currentDisplayScreen--;
+			}
+		}
+	}
 }
 
 
@@ -101,28 +127,53 @@ void display_execute(void)
     }
 
     uint16_t lengths = 40;
-    char xy_str[lengths];
-    char percent_str[lengths];
-    char direction_str[lengths];
 
-    render_joystick_values(xy_str, percent_str, direction_str, lengths);
+    char line1[lengths];
+    char line2[lengths];
+
+    if(currentDisplayScreen == CURRENT_STEPS) {
+	    if(stepsUnitIsGoal) {
+			uint32_t steps = Pedometer_GetSteps();
+			uint32_t goal = Pedometer_GetGoal();
+			uint32_t prog_perc = (steps * 100) / goal;
+		    snprintf(line1, sizeof(line1), "Steps: %lu%% of goal", prog_perc);
+	    } else {
+		    snprintf(line1, sizeof(line1), "Steps: %lu", Pedometer_GetSteps());
+	    }
+	    snprintf(line2, sizeof(line2), "");
+    } else if(currentDisplayScreen == DISTANCE_TRAVELLED) {
+	    uint32_t dist = ((Pedometer_GetSteps() * 80) / 100);
+	    if(distanceUnitIsM) {
+	    	dist /= 1000;
+		    snprintf(line1, sizeof(line1), "Dist: %lu km", dist);
+	    } else {
+		    dist = (dist * 10936) / 10000;
+		    snprintf(line1, sizeof(line1), "Dist: %lu yards", dist);
+	    }
+	    snprintf(line2, sizeof(line2), "");
+    } else if(currentDisplayScreen == GOAL_PROGRESS) {
+	    if(goalSetModeActive) {
+		    uint32_t pos = POT_get_position();
+		    newGoal = pos;  // TODO: possible calculation if values don't line up
+		    snprintf(line1, sizeof(line1),  "-- GOAL SET --");
+		    snprintf(line1, sizeof(line2),  "New: %lu steps", newGoal);
+	    } else {
+			uint32_t steps = Pedometer_GetSteps();
+			uint32_t goal = Pedometer_GetGoal();
+			uint32_t prog_perc = (steps * 100) / goal;
+		    snprintf(line1, sizeof(line1),  "Goal:  %lu", goal);
+		    snprintf(line2, sizeof(line2), "Prog: %lu%%", prog_perc);
+	    }
+    }
+    ssd1306_Fill(Black);
 
     ssd1306_SetCursor(0, 10);
-    ssd1306_WriteString(xy_str, Font_7x10, White);
+    ssd1306_WriteString(line1, Font_7x10, White);
 
-    ssd1306_SetCursor(0, 20);
-    ssd1306_WriteString(percent_str, Font_7x10, White);
-
-    ssd1306_SetCursor(0, 30);
-    ssd1306_WriteString(direction_str, Font_7x10, White);
+    ssd1306_SetCursor(0, 25);
+    ssd1306_WriteString(line2, Font_7x10, White);
 
     ssd1306_UpdateScreen();
-
-    if (serialIsDebugging) {
-        HAL_UART_Transmit(&huart2, xy_str,        strlen(xy_str),        10000);
-        HAL_UART_Transmit(&huart2, percent_str,   strlen(percent_str),   10000);
-        HAL_UART_Transmit(&huart2, direction_str, strlen(direction_str), 10000);
-    }
 }
 
 
@@ -142,7 +193,9 @@ void toggle_serial_debug(void)
 
 void display_toggle_test_mode(void)
 {
-    testModeActive = !testModeActive;
+	if(!goalSetModeActive) {
+	    testModeActive = !testModeActive;
+	}
 }
 bool display_is_test_mode(void)             /* M2.3 */
 {
