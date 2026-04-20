@@ -18,10 +18,19 @@
 #include <stdbool.h>
 #include <stdio.h>
 
+#define POT_GOAL_MIN        500U
+#define POT_GOAL_MAX        15000U
+#define POT_GOAL_INCREMENT  100U
+#define POT_ADC_MIN         200U
+#define POT_ADC_MAX         3900U
+
 static uint32_t POT_get_position(void)
 {
-	// TODO: Replace this placeholder with real
-	return 4000;
+    uint32_t raw = get_potentiometer();
+    if (raw < POT_ADC_MIN) raw = POT_ADC_MIN;
+    if (raw > POT_ADC_MAX) raw = POT_ADC_MAX;
+    uint32_t goal = POT_GOAL_MIN + (((raw - POT_ADC_MIN) * (POT_GOAL_MAX - POT_GOAL_MIN)) / (POT_ADC_MAX - POT_ADC_MIN));
+    return (goal / POT_GOAL_INCREMENT) * POT_GOAL_INCREMENT;
 }
 
 static bool serialIsDebugging = false;

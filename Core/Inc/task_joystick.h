@@ -15,7 +15,7 @@ void joystick_execute(void);
 
 uint16_t get_joystick_x(void);
 uint16_t get_joystick_y(void);
-
+uint16_t get_potentiometer(void);
 int16_t get_joystick_x_percent(void);
 int16_t get_joystick_y_percent(void);
 

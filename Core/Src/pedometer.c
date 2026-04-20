@@ -31,3 +31,4 @@ void Pedometer_RemoveSteps(uint32_t steps)
         stepCount -= steps;
     }
 }
+
