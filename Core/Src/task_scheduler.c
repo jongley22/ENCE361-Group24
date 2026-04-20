@@ -15,11 +15,11 @@
 #define HZ_TO_TICKS(FREQUENCY_HZ) (TICK_FREQUENCY_HZ/FREQUENCY_HZ)
 
 
-static typedef struct {
-    uint16_t period_ticks,
-    uint32_t next_run,
-    void(*init_func)(void),
-    void(*execute_func)(void),
+typedef struct {
+    uint16_t period_ticks;
+    uint32_t next_run;
+    void(*init_func)(void);
+    void(*execute_func)(void);
 } Task;
 
 
@@ -31,11 +31,11 @@ static void init_tasks(void);
 
 
 void scheduler_add_task(
-    void(*init_func)(void)
-    void(*execute_func)(void))
-    uint16_t frequency,
+    void(*init_func)(void),
+    void(*execute_func)(void),
+    uint16_t frequency)
 {
-    const Task* task = tasks[num_tasks];
+    Task* task = tasks+num_tasks;
     task->period_ticks = HZ_TO_TICKS(frequency);
     task->period_ticks = HZ_TO_TICKS(frequency);
     task->init_func = init_func;
@@ -63,7 +63,7 @@ void scheduler_run_tasks(void)
         for(task=tasks; task<tasks+num_tasks; task++) {
             if (ticks > task->next_run) {
                 (*task->execute_func)();
-                task->next_run += task->period_ticks();
+                task->next_run += task->period_ticks;
             }
         }
     }

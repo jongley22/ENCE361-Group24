@@ -20,7 +20,7 @@
 //*****************************************************************************
 // Constants
 //*****************************************************************************
-typedef enum butNames {UP = 0, DOWN, LEFT, RIGHT, NUM_BUTTONS} buttonName_t;
+typedef enum butNames {UP = 0, DOWN, LEFT, RIGHT, JOYSTICK_CLICK, NUM_BUTTONS} buttonName_t;
 typedef enum butStates {RELEASED = 0, PUSHED, NO_CHANGE} buttonState_t;
 
 

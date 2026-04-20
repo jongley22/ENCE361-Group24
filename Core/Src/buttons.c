@@ -67,6 +67,13 @@ buttonProperties_t buttons[NUM_BUTTONS] =
 			.port = GPIOC,
 			.pin = GPIO_PIN_10,
 			.normalState = GPIO_PIN_RESET
+		},
+		// JOYSTICK button (middle click, PB1, active HIGH)
+		[JOYSTICK_CLICK] =
+		{
+			.port = GPIOB,
+			.pin = GPIO_PIN_1,
+			.normalState = GPIO_PIN_RESET
 		}
 };
 
