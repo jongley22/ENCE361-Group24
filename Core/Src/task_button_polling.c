@@ -91,6 +91,7 @@ static void pwm_increase(void)
 
 static void joystick_test_mode_update(void)
 {
+    uint32_t goal    = Pedometer_GetGoal();
     uint32_t now = HAL_GetTick();
     if (now < joystickNextRun) {
         return;
@@ -117,13 +118,13 @@ static void joystick_test_mode_update(void)
     else
     {
         /* high displacement — continuous, no one shot restriction */
-        steps = (uint32_t)(((abs(percent) - JOYSTICK_STEP_THRESHOLD_PERCENT) * JOYSTICK_MAX_STEPS_PER_CALL) / JOYSTICK_STEP_THRESHOLD_PERCENT);
+        uint32_t max_steps_per_call = goal / 30;
+        steps = (uint32_t)(((abs(percent) - JOYSTICK_STEP_THRESHOLD_PERCENT) * max_steps_per_call) / JOYSTICK_STEP_THRESHOLD_PERCENT);
         if (steps < 1) steps = 1;
     }
 
     if (percent < 0)    /* joystick up — increment */
     {
-        uint32_t goal    = Pedometer_GetGoal();
         uint32_t current = Pedometer_GetSteps();
         uint32_t limit   = (goal >= 10) ? (goal - 10) : 0;
 
@@ -133,8 +134,7 @@ static void joystick_test_mode_update(void)
             }
             Pedometer_AddSteps(steps);
         }
-    }
-    else                /* joystick down — decrement */
+    } else                /* joystick down — decrement */
     {
         Pedometer_RemoveSteps(steps);
     }
