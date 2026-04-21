@@ -170,12 +170,7 @@ static void check_a_button(buttonName_t button_name, rgb_led_t rgb_name)
     else if (button_name == LEFT) {
         if (state == PUSHED) {
             rgb_led_on(rgb_name);
-            uint32_t goal    = Pedometer_GetGoal();
-            uint32_t current = Pedometer_GetSteps();
-            uint32_t limit   = (goal >= 10) ? (goal - 10) : 0;
-            if (current < limit) {
-                Pedometer_AddSteps(SW4_STEPS_INCREMENT);
-            }
+            Pedometer_AddSteps(SW4_STEPS_INCREMENT);
         } else if (state == RELEASED) {
             rgb_led_off(rgb_name);
         }

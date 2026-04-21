@@ -81,8 +81,6 @@ void Error_Handler(void);
 #define JOYSTICK_CLICK_GPIO_Port GPIOB
 #define LD2_Pin GPIO_PIN_9
 #define LD2_GPIO_Port GPIOC
-#define BUZZER_Pin GPIO_PIN_0
-#define BUZZER_GPIO_Port GPIOD
 #define RGB_GREEN_Pin GPIO_PIN_2
 #define RGB_GREEN_GPIO_Port GPIOD
 #define RGB_RED_Pin GPIO_PIN_3

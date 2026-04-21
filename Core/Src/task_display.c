@@ -7,6 +7,8 @@
 #include "task_display.h"
 #include "task_joystick.h"
 #include "pedometer.h"
+#include "main.h"
+#include "pwm.h"
 
 #include "ssd1306_conf.h"
 #include "ssd1306_fonts.h"
@@ -23,6 +25,9 @@
 #define POT_GOAL_INCREMENT  100U
 #define POT_ADC_MIN         200U
 #define POT_ADC_MAX         3900U
+#define BUZZER_DURATION_TICKS 10
+
+static bool buzzer_started = false;
 
 static uint32_t POT_get_position(void)
 {
@@ -126,9 +131,33 @@ static void render_test_mode(void)
     ssd1306_UpdateScreen();
 }
 
+static void buzzer_start(void)
+{
+    //HAL_GPIO_WritePin(BUZZER_GPIO_Port, BUZZER_Pin, 1);
+    //HAL_Delay(3000);
+    //HAL_GPIO_WritePin(BUZZER_GPIO_Port, BUZZER_Pin, 0);
+	static int32_t counter;
+	if(buzzer_started) {
+		counter ++;
+		if(counter > BUZZER_DURATION_TICKS) {
+			HAL_TIM_PWM_Stop(&htim16, TIM_CHANNEL_1);
+		}
+	} else {
+		HAL_TIM_PWM_Start(&htim16, TIM_CHANNEL_1);
+		counter = 0;
+		buzzer_started = true;
+	}
+}
 
 void display_execute(void)
 {
+    uint32_t steps = Pedometer_GetSteps();
+    uint32_t goal  = Pedometer_GetGoal();
+    if (steps >= goal) {
+        buzzer_start();
+    } else {
+    	buzzer_started = false;
+    }
     if (testModeActive)
     {
         render_test_mode();
@@ -183,6 +212,8 @@ void display_execute(void)
     ssd1306_WriteString(line2, Font_7x10, White);
 
     ssd1306_UpdateScreen();
+
+
 }
 
 
