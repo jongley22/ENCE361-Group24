@@ -10,20 +10,20 @@
 
 typedef enum
 {
-	RGB_LEFT,
-	RGB_RIGHT,
-	RGB_UP,
-	RGB_DOWN,
-	RGB_NUM_LEDS
+    RGB_LEFT,
+    RGB_RIGHT,
+    RGB_UP,
+    RGB_DOWN,
+    RGB_NUM_LEDS
 } rgb_led_t;
 
 
 typedef enum
 {
-	RGB_RED,
-	RGB_GREEN,
-	RGB_BLUE,
-	RGB_NUM_COLOURS
+    RGB_RED,
+    RGB_GREEN,
+    RGB_BLUE,
+    RGB_NUM_COLOURS
 } rgb_colour_t;
 
 void rgb_led_on(rgb_led_t);

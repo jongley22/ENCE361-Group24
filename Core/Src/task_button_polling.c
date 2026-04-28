@@ -64,17 +64,17 @@ void button_polling_execute(void)
     }
     buttonState_t state = buttons_checkButton(JOYSTICK_CLICK);
     if(state == PUSHED) {
-	    if(!joystick_clicked) {
-		    joystick_clicked = true;
-		    joystickLastClicked = HAL_GetTick();
-	    }
+        if(!joystick_clicked) {
+            joystick_clicked = true;
+            joystickLastClicked = HAL_GetTick();
+        }
     } else if(state == RELEASED) {
-	    joystick_clicked = false;
-	    if(HAL_GetTick() - joystickLastClicked > JOYSTICK_LONG_HOLD_TICKS) {
-		    display_joystick_long_press();
-	    } else {
-		    display_joystick_short_press();
-	    }
+        joystick_clicked = false;
+        if(HAL_GetTick() - joystickLastClicked > JOYSTICK_LONG_HOLD_TICKS) {
+            display_joystick_long_press();
+        } else {
+            display_joystick_short_press();
+        }
     }
 }
 
