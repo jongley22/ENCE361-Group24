@@ -12,7 +12,7 @@ uint32_t Pedometer_GetSteps(void)
 }
 void Pedometer_SetGoal(uint32_t newGoal)
 {
-	stepGoal = newGoal;
+    stepGoal = newGoal;
 }
 
 uint32_t Pedometer_GetGoal(void)
