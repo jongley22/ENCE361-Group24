@@ -4,11 +4,13 @@
  *  Created on: 24/02/2026
  *      Author: jon27
  */
+
 #include "task_scheduler.h"
 
-#include "stm32c0xx_hal.h"
+#include <stm32c0xx_hal.h>
 
 #include <stdint.h>
+
 
 #define MAX_NUM_TASKS 20
 #define TICK_FREQUENCY_HZ 1000
@@ -22,7 +24,6 @@ typedef struct {
     void(*execute_func)(void);
 } Task;
 
-
 static uint8_t num_tasks = 0;
 static Task tasks[MAX_NUM_TASKS];
 
@@ -30,7 +31,7 @@ static Task tasks[MAX_NUM_TASKS];
 static void init_tasks(void);
 
 
-void scheduler_add_task(
+void SCHEDULER_add_task(
     void(*init_func)(void),
     void(*execute_func)(void),
     uint16_t frequency)
@@ -43,28 +44,26 @@ void scheduler_add_task(
     num_tasks ++;
 }
 
-
-static void init_tasks(void)
-{
-    for(Task* task=tasks; task<tasks+num_tasks; task++) {
-        (*task->init_func)();
-        task->next_run = HAL_GetTick() + task->period_ticks;
-    }
-}
-
-
-void scheduler_run_tasks(void)
+void SCHEDULER_run_tasks(void)
 {
     init_tasks();
     Task* task;
     uint32_t ticks;
     while (1) {
         ticks = HAL_GetTick();
-        for(task=tasks; task<tasks+num_tasks; task++) {
+        for (task=tasks; task<tasks+num_tasks; task++) {
             if (ticks > task->next_run) {
                 (*task->execute_func)();
                 task->next_run += task->period_ticks;
             }
         }
+    }
+}
+
+static void init_tasks(void)
+{
+    for (Task* task=tasks; task<tasks+num_tasks; task++) {
+        (*task->init_func)();
+        task->next_run = HAL_GetTick() + task->period_ticks;
     }
 }

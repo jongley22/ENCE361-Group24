@@ -3,14 +3,17 @@
 
 #include <stdint.h>
 
-/* Default values */
+
+float    PEDOMETER_get_distance(void);
+
+uint32_t PEDOMETER_get_steps(void);
+void     PEDOMETER_set_steps(uint32_t steps);
+void     PEDOMETER_add_steps(uint32_t steps);
+void     PEDOMETER_remove_steps(uint32_t steps);
+
+uint32_t PEDOMETER_get_goal(void);
+void     PEDOMETER_set_goal(uint32_t goal);
+uint32_t PEDOMETER_get_goal_percent(void);
 
 
-/* Function prototypes */
-uint32_t Pedometer_GetSteps(void);
-float    Pedometer_GetDistance(void);
-uint32_t Pedometer_GetGoal(void);
-void     Pedometer_AddSteps(uint32_t steps);
-void     Pedometer_RemoveSteps(uint32_t steps);
-void     Pedometer_SetGoal(uint32_t goal);
 #endif /* PEDOMETER_H */

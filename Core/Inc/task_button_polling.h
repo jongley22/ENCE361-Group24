@@ -10,8 +10,8 @@
 
 
 
-void button_polling_init(void);
-void button_polling_execute(void);
+void BUTTON_POLLING_init(void);
+void BUTTON_POLLING_execute(void);
 
 
 
