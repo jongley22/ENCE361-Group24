@@ -70,7 +70,7 @@ static uint32_t calculate_step_change(uint32_t goal, uint16_t joystick_percent)
     // these numbers, and I thought it would be easier to read
     // if the working was right below the only usage of
     // the equation.
-    return goal / (770 -7*joystick_percent);
+    return goal / (550 - 5*joystick_percent);
 }
 
 
@@ -157,28 +157,6 @@ static uint32_t calculate_step_change(uint32_t goal, uint16_t joystick_percent)
  *     - steps_per_call = goal / (770 - (10*63*joy)/90)
  *     - steps_per_call = goal / (770 - 7*joy)
  *
- * Compile time constants setting one:
- *     - freq = 10 Hz
- *     - min_time = 5 seconds
- *     - max_time = 1000 seconds
- *
- *     - time = ((min_time - max_time) / 90)*joy + min_time - ((min_time - max_time) / 90)*100
- *     - time = ((5 - 1000) / 90)*joy + 5 - ((5 - 1000) / 90)*100
- *     - time = (-995) / 90)*joy + 5 - ((-995) / 90)*100
- *     - time = (-995) / 90)*joy + 5 + (9950 / 9)
- *     - time = (-199 / 18)*joy + 9995/9
- *
- *     - steps_per_s = goal / time
- *     - steps_per_s = goal / ((-199 / 18)*joy + 9995/9)
- *     - steps_per_s = goal / (11*joy + 1111)
- *
- *     - steps_per_call = steps_per_s / freq
- *     - steps_per_call = steps_per_s / 10
- *     - steps_per_call = goal / (11*joy + 1111) / 10
- *     - steps_per_call = goal / (10*11*joy + 1111*10)
- *     - steps_per_call = goal / (110*joy + 11110)
- *
- * 
  * Example Usage one:
  *     - goal = 1024 steps
  *     - joy  = 100%
@@ -190,4 +168,26 @@ static uint32_t calculate_step_change(uint32_t goal, uint16_t joystick_percent)
  *     - joy  = 10%
  *     - steps_per_call = goal / (770 - 7*joy)
  *     - steps_per_call = 1.5 (approx)
+ *
+ *
+ * Compile time constants setting two:
+ *     - freq = 10 Hz
+ *     - min_time = 5 seconds
+ *     - max_time = 50 seconds
+ *
+ *     - time = ((min_time - max_time) / 90)*joy + min_time - ((min_time - max_time) / 90)*100
+ *     - time = ((-45) / 90)*joy + 5 - ((-45) / 90)*100
+ *     - time = (-1/2)*joy + 5 + 50
+ *     - time = (-1/2)*joy + 55
+ *
+ *     - steps_per_s = goal / time
+ *     - steps_per_s = goal / ((-1/2)*joy + 55)
+ *     - steps_per_s = goal / ((-1/2)*joy + 55)
+ *
+ *     - steps_per_call = steps_per_s / freq
+ *     - steps_per_call = steps_per_s / 10
+ *     - steps_per_call = (goal / ((-1/2)*joy + 55)) / 10
+ *     - steps_per_call = goal / (10*(-1/2)*joy + 10*55)
+ *     - steps_per_call = goal / ((-5)*joy + 550)
+ *     - steps_per_call = goal / (550 - 5*joy)
  */
