@@ -7,6 +7,9 @@
 #include <stdio.h>
 
 
+#define JOYSTICK_ONE_CHANGE_THRESHOLD 40
+
+
 bool joystick_at_rest = true;
 
 // steps increasing or decreasing (joystick up or down)
@@ -44,8 +47,22 @@ void test_mode_joystick_state_change(
     JOYSTICK_State* new_state)
 {
     joystick_at_rest = new_state->y_at_rest;
-    steps_increase = new_state->is_up;
-    step_change_per_call = calculate_step_change(PEDOMETER_get_goal(), new_state->percent_y);
+    if (!joystick_at_rest) {
+        steps_increase = new_state->is_up;
+        if (new_state->percent_y > JOYSTICK_ONE_CHANGE_THRESHOLD) {
+            step_change_per_call = calculate_step_change(
+                PEDOMETER_get_goal(),
+                new_state->percent_y
+            );
+        } else {
+            // force a call so that steps are incremented up/down by 1
+            steps_change_per_call = 1;
+            TEST_MODE_called_at_frequency();
+
+            // force no later calls to update.
+            joystick_at_rest = true;
+        }
+    }
 }
 
 void render_test_mode(char* display, size_t max_chars_length)
