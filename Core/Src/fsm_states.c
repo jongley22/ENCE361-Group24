@@ -43,17 +43,6 @@ static void to_current_steps(void)
     state->joystick_right = &to_goal_progress;
 }
 
-static void to_distance_travelled(void)
-{
-    DISP_FSM_State* state = DISP_FSM_to_new_state();
-
-    state->get_display_chars = &render_distance_travelled;
-    state->button_test_tap = &to_test_mode;
-    state->joystick_up = &toggle_distance_units;
-    state->joystick_left = &to_distance_travelled;
-    state->joystick_right = &to_goal_progress;
-}
-
 static void to_goal_progress(void)
 {
     DISP_FSM_State* state = DISP_FSM_to_new_state();
@@ -63,6 +52,17 @@ static void to_goal_progress(void)
     state->joystick_left = &to_current_steps;
     state->joystick_long_press = &to_goal_set;
     state->joystick_right = &to_distance_travelled;
+}
+
+static void to_distance_travelled(void)
+{
+    DISP_FSM_State* state = DISP_FSM_to_new_state();
+
+    state->get_display_chars = &render_distance_travelled;
+    state->button_test_tap = &to_test_mode;
+    state->joystick_up = &toggle_distance_units;
+    state->joystick_left = &to_goal_progress;
+    state->joystick_right = &to_current_steps;
 }
 
 static void to_goal_set(void)

@@ -65,12 +65,12 @@ static uint32_t calculate_step_change(uint32_t goal, uint16_t joystick_percent)
 {
     // See working below for how this equation was derrived.
     //
-    // I have purposely broken the magick numbers style rule
+    // I have purposely broken the magic numbers style rule
     // here. This is because the working below fully explains
     // these numbers, and I thought it would be easier to read
     // if the working was right below the only usage of
     // the equation.
-    return goal / (770 - 7*joystick_percent);
+    return goal / (770 -7*joystick_percent);
 }
 
 
@@ -156,6 +156,27 @@ static uint32_t calculate_step_change(uint32_t goal, uint16_t joystick_percent)
  *     - steps_per_call = goal / (10*77 - (10*63*joy)/90)
  *     - steps_per_call = goal / (770 - (10*63*joy)/90)
  *     - steps_per_call = goal / (770 - 7*joy)
+ *
+ * Compile time constants setting one:
+ *     - freq = 10 Hz
+ *     - min_time = 5 seconds
+ *     - max_time = 1000 seconds
+ *
+ *     - time = ((min_time - max_time) / 90)*joy + min_time - ((min_time - max_time) / 90)*100
+ *     - time = ((5 - 1000) / 90)*joy + 5 - ((5 - 1000) / 90)*100
+ *     - time = (-995) / 90)*joy + 5 - ((-995) / 90)*100
+ *     - time = (-995) / 90)*joy + 5 + (9950 / 9)
+ *     - time = (-199 / 18)*joy + 9995/9
+ *
+ *     - steps_per_s = goal / time
+ *     - steps_per_s = goal / ((-199 / 18)*joy + 9995/9)
+ *     - steps_per_s = goal / (11*joy + 1111)
+ *
+ *     - steps_per_call = steps_per_s / freq
+ *     - steps_per_call = steps_per_s / 10
+ *     - steps_per_call = goal / (11*joy + 1111) / 10
+ *     - steps_per_call = goal / (10*11*joy + 1111*10)
+ *     - steps_per_call = goal / (110*joy + 11110)
  *
  * 
  * Example Usage one:

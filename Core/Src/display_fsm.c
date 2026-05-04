@@ -55,20 +55,25 @@ void DISP_FSM_trig_button_test_tap(void)
 
 void DISP_FSM_trig_joystick_change_state(JOYSTICK_State* old_state, JOYSTICK_State* new_state)
 {
-    if (current_state.joystick_change_state != NULL) {
-        if (old_state->at_rest && !new_state->at_rest) {
-            if (new_state->is_up) {
-                trigger_func(current_state.joystick_up);
-            } else {
-                trigger_func(current_state.joystick_down);
-            }
-            if (new_state->is_left) {
-                trigger_func(current_state.joystick_left);
-            } else {
-                trigger_func(current_state.joystick_right);
-            }
-        }
-        (*current_state.joystick_change_state)(old_state, new_state);
+	if (!old_state->at_max && new_state->at_max) {
+		if (new_state->x_at_max) {
+			if (new_state->is_left) {
+				trigger_func(current_state.joystick_left);
+			} else {
+				trigger_func(current_state.joystick_right);
+			}
+		}
+		if (new_state->y_at_max) {
+			if (new_state->is_up) {
+				trigger_func(current_state.joystick_up);
+			} else {
+				trigger_func(current_state.joystick_down);
+			}
+		}
+	}
+
+	if (current_state.joystick_change_state != NULL) {
+		(*current_state.joystick_change_state)(old_state, new_state);
     }
 }
 

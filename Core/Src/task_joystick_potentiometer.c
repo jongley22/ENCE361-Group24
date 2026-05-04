@@ -17,6 +17,7 @@
 #define JOYSTICK_Y_MIN 285
 #define JOYSTICK_X_MAX 3940
 #define JOYSTICK_Y_MAX 4075
+#define JOYSTICK_AT_MAX 60
 
 
 JOYSTICK_State current_state;
@@ -49,6 +50,7 @@ void JOYPOT_init(void)
     current_state.x_at_rest = true;
     current_state.y_at_rest = true;
     current_state.at_rest = true;
+    current_state.at_max = false;
     current_pot = 0;
 }
 
@@ -60,11 +62,11 @@ void JOYPOT_execute(void)
 
 static void call_needed_fsm_funcs(void)
 {
-    JOYSTICK_State* new_state = {0};
-    fill_in_state(new_state);
-    if (!states_are_equal(new_state, &current_state)) {
-        DISP_FSM_trig_joystick_change_state(&current_state, new_state);
-        current_state = *new_state;
+    JOYSTICK_State new_state = {0};
+    fill_in_state(&new_state);
+    if (!states_are_equal(&new_state, &current_state)) {
+        DISP_FSM_trig_joystick_change_state(&current_state, &new_state);
+        current_state = new_state;
     }
     uint16_t new_pot = get_potentiometer();
     if (current_pot != new_pot) {
@@ -86,22 +88,16 @@ static uint16_t get_joystick_x(void)
 {
     if (raw_adc[2] > JOYSTICK_X_MAX) {
         return JOYSTICK_X_MAX;
-    } else if (raw_adc[2] < JOYSTICK_X_MIN) {
-        return JOYSTICK_X_MIN;
-    } else {
-        return raw_adc[2];
     }
+    return raw_adc[2];
 }
 
 static uint16_t get_joystick_y(void)
 {
     if (raw_adc[1] > JOYSTICK_Y_MAX) {
         return JOYSTICK_Y_MAX;
-    } else if (raw_adc[1] < JOYSTICK_Y_MIN) {
-        return JOYSTICK_Y_MIN;
-    } else {
-        return raw_adc[1];
     }
+    return raw_adc[1];
 }
 
 static int16_t get_joystick_x_percent(void)
@@ -141,10 +137,13 @@ static void fill_in_state(JOYSTICK_State* state)
     state->percent_y = abs(y);
     state->x_at_rest = (state->percent_x < 10);
     state->y_at_rest = (state->percent_y < 10);
+    state->x_at_max = (state->percent_x > JOYSTICK_AT_MAX);
+    state->y_at_max = (state->percent_y > JOYSTICK_AT_MAX);
+    state->at_max = (state->x_at_max || state->y_at_max);
     state->at_rest = state->x_at_rest && state->y_at_rest;
     state->is_left = false;
     state->is_up = false;
-    if (x < 0) {
+    if (x > 0) {
         state->is_left = true;
     }
     if (y < 0) {

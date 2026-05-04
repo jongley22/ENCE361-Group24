@@ -21,6 +21,9 @@ typedef struct {
     bool x_at_rest;
     bool y_at_rest;
     bool at_rest;
+    bool x_at_max;
+    bool y_at_max;
+    bool at_max;
 } JOYSTICK_State;
 
 
