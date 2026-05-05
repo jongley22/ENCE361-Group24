@@ -9,8 +9,8 @@
 #define INC_TASK_LED_BLINKING_H_
 
 
-void led_blinking_init(void);
-void led_blinking_execute(void);
+void LED_BLINKING_init(void);
+void LED_BLINKING_execute(void);
 
 
 #endif /* INC_TASK_LED_BLINKING_H_ */

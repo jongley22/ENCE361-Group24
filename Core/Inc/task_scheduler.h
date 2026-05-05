@@ -8,11 +8,13 @@
 #ifndef INC_TASK_SCHEDULER_H
 #define INC_TASK_SCHEDULER_H
 
+
 #include <stdint.h>
 
 
-void scheduler_run_tasks(void);
-void scheduler_add_task(
+void SCHEDULER_run_tasks(void);
+
+void SCHEDULER_add_task(
     void(*init_func)(void),
     void(*execute_func)(void),
     uint16_t frequency
