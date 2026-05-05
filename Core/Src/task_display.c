@@ -52,14 +52,14 @@ static void write_lines(char* chars)
     char current_line[strlen(chars)+1];
     current_line[0] = '\0';
 
-    uint16_t display_pos = 10;
+    uint16_t display_pos = 0;
     size_t str_pos = 0;
     for(size_t i=0; chars[i] != '\0'; i++) {
         if(chars[i] == '\n') {
             current_line[str_pos] = '\0';
             write_line(current_line, display_pos);
             current_line[0] = '\0';
-            display_pos += 20;
+            display_pos += 10;
             str_pos = 0;
         } else {
             current_line[str_pos] = chars[i];
