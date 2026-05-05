@@ -35,8 +35,8 @@ void render_goal_set(char* display, size_t max_chars_length)
         display,
         max_chars_length,
         "Goal Set\n\n"
-        "Current Goal:\n%lu\n\n"
-        "New Goal:\n%lu",
+        "Current: %lu\n"
+        "New: %lu",
         PEDOMETER_get_goal(),
         new_goal
     );

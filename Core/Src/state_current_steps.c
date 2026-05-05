@@ -21,7 +21,7 @@ void render_current_steps(char* display, size_t max_chars_length)
             display,
             max_chars_length,
             "Current Steps\n"
-            "steps: %lu %% of goal",
+            "%lu%% of goal",
             PEDOMETER_get_goal_percent()
         );
     } else {
