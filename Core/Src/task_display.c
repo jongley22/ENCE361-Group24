@@ -59,7 +59,7 @@ static void write_lines(char* chars)
             current_line[str_pos] = '\0';
             write_line(current_line, display_pos);
             current_line[0] = '\0';
-            display_pos += 10;
+            display_pos += 15;
             str_pos = 0;
         } else {
             current_line[str_pos] = chars[i];
