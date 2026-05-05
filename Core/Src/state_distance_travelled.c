@@ -41,9 +41,8 @@ void render_distance_travelled(char* display, size_t max_chars_length)
             display,
             max_chars_length,
             "Distance\n"
-            "%lu.%02lu yards",
-            dist.before_dot,
-            dist.after_dot
+            "%lu yards",
+            dist.before_dot
         );
     }
 }
@@ -59,7 +58,6 @@ static Distance calculate_current_distance(void)
         dist.after_dot = (dist_meters / 10) % 100;
     } else {
         dist.before_dot = (dist_meters * 10936) / 10000;
-        dist.after_dot = ((dist_meters * 10936) / 100) % 100;
     }
 
     return dist;
