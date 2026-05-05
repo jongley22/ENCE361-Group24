@@ -36,7 +36,6 @@ void BUZZER_execute(void)
         buzzing_tick_count ++;
         stop_buzzing_if_needed();
     } else {
-        buzzing_tick_count = 0;
         start_buzzing_if_needed();
     }
 }
