@@ -44,7 +44,11 @@ void BUZZER_execute(void)
 static void start_buzzing_if_needed(void)
 {
     if (PEDOMETER_get_steps() >= PEDOMETER_get_goal()) {
-        buzzer_start();
+	    if (buzzing_tick_count == 0) {
+                buzzer_start();
+	    }
+    } else {
+        buzzing_tick_count = 0;
     }
 }
 
