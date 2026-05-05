@@ -30,8 +30,8 @@ void render_distance_travelled(char* display, size_t max_chars_length)
     int num_written = snprintf(
         display,
         max_chars_length,
-        "-- Distance Screen --\n"
-        "Dist: %lu.%02lu km",
+        "Distance\n"
+        "%lu.%02lu km",
         dist.before_dot,
         dist.after_dot
     );

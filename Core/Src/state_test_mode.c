@@ -70,7 +70,7 @@ void render_test_mode(char* display, size_t max_chars_length)
     snprintf(
         display,
         max_chars_length,
-        "-- Test Mode Screen --\n"
+        "Test Mode\n"
         "Steps: %lu\n"
         "Goal: %lu",
         PEDOMETER_get_steps(),

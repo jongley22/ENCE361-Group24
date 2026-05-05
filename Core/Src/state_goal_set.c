@@ -34,9 +34,9 @@ void render_goal_set(char* display, size_t max_chars_length)
     snprintf(
         display,
         max_chars_length,
-        "-- Goal Set --\n"
-        "Current Goal: %lu\n"
-        "New Goal: %lu",
+        "Goal Set\n\n"
+        "Current Goal:\n%lu\n\n"
+        "New Goal:\n%lu",
         PEDOMETER_get_goal(),
         new_goal
     );
@@ -52,7 +52,7 @@ static uint32_t calc_goal_from_pot(uint16_t current_pot)
     }
 
     uint32_t goal = (POT_GOAL_MIN + (((current_pot - POT_ADC_MIN) * (POT_GOAL_MAX - POT_GOAL_MIN))
-		     / (POT_ADC_MAX - POT_ADC_MIN)));
+                     / (POT_ADC_MAX - POT_ADC_MIN)));
 
     // round goal to nearest increment before returning
     return (goal / POT_GOAL_INCREMENT) * POT_GOAL_INCREMENT;

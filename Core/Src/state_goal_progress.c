@@ -10,8 +10,10 @@ void render_goal_progress(char* display, size_t max_chars_length)
     snprintf(
         display,
         max_chars_length,
-        "-- Goal Progress Screen --\n"
-        "Goal Prog: %lu %%",
+        "Goal Progress\n"
+        "Goal: %lu steps\n"
+        "Prog: %lu %%",
+        PEDOMETER_get_goal(),
         PEDOMETER_get_goal_percent()
     );
 }
