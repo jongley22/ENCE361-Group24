@@ -6,10 +6,21 @@
  */
 
 #include "imu_lsm6ds.h"
+
+#include "pedometer.h"
+
 #include "spi.h"
 
 // Hardware configuration
 #define spi_hal_handler hspi2
+
+void HAL_GPIO_EXTI_Rising_Callback(uint16_t GPIO_Pin)
+{
+    if (GPIO_Pin & IMU_INT1_Pin)
+    {
+        PEDOMETER_add_steps(1);
+    }
+}
 
 void imu_lsm6ds_write_byte(imu_register_t register_address, uint8_t value)
 {
