@@ -56,7 +56,7 @@ void test_mode_joystick_state_change(
             );
         } else {
             // force a call so that steps are incremented up/down by 1
-            steps_change_per_call = 1;
+            step_change_per_call = 1;
             TEST_MODE_called_at_frequency();
 
             // force no later calls to update.
