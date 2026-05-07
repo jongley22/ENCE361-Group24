@@ -35,6 +35,7 @@ DISP_FSM_State* DISP_FSM_to_new_state(void)
 
 void DISP_FSM_to_previous_state(void)
 {
+    trigger_func(current_state.on_state_exit);
     current_state = previous_state;
 }
 
