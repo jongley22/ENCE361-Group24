@@ -16,6 +16,7 @@
 #include "task_display.h"
 #include "task_buzzer.h"
 #include "state_test_mode.h"
+#include "imu_lsm6ds.h"
 
 #include <stm32c0xx_hal.h>
 #include <stdint.h>
@@ -37,6 +38,8 @@
 
 void app_main(void)
 {
+    imu_init();
+
     FSM_STATES_to_initial_state();
 
     SCHEDULER_add_task(

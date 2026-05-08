@@ -79,6 +79,9 @@ void Error_Handler(void);
 #define JOYSTICK_X_GPIO_Port GPIOC
 #define JOYSTICK_CLICK_Pin GPIO_PIN_1
 #define JOYSTICK_CLICK_GPIO_Port GPIOB
+#define IMU_INT1_Pin GPIO_PIN_10
+#define IMU_INT1_GPIO_Port GPIOB
+#define IMU_INT1_EXTI_IRQn EXTI4_15_IRQn
 #define LD2_Pin GPIO_PIN_9
 #define LD2_GPIO_Port GPIOC
 #define RGB_GREEN_Pin GPIO_PIN_2
