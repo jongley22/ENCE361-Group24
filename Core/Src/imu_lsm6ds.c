@@ -20,8 +20,8 @@ void HAL_GPIO_EXTI_Rising_Callback(uint16_t GPIO_Pin)
     static uint16_t running_step_count = 0;
     if (GPIO_Pin & IMU_INT1_Pin)
     {
-        uint8_t low_byte = imu_lsm6ds_read_byte(STEP_COUNTER_H);
-        uint8_t high_byte = imu_lsm6ds_read_byte(STEP_COUNTER_L);
+        uint8_t low_byte = imu_lsm6ds_read_byte(STEP_COUNTER_L);
+        uint8_t high_byte = imu_lsm6ds_read_byte(STEP_COUNTER_H);
 
         uint16_t step_count = (uint16_t)(high_byte<<8) | low_byte;
 
