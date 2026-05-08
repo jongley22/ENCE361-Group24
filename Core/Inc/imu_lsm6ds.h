@@ -20,6 +20,8 @@ typedef enum {
 	OUTZ_H_XL = 0x2D,
 	INT1_CTRL = 0x0D,
 	CTRL10_C = 0x19,
+	STEP_COUNTER_L = 0x4B,
+	STEP_COUNTER_H = 0x4C,
 } imu_register_t;
 
 // Standard options
