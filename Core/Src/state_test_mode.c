@@ -7,7 +7,7 @@
 #include <stdio.h>
 
 
-#define JOYSTICK_ONE_CHANGE_THRESHOLD 40
+#define JOYSTICK_ONE_CHANGE_THRESHOLD 50
 
 
 bool joystick_at_rest = true;
@@ -20,20 +20,13 @@ uint32_t step_change_per_call = 0;
 
 
 static uint32_t calculate_step_change(uint32_t goal, uint16_t joystick_percent);
+static void add_or_subtract_steps(uint32_t steps);
 
 
 void TEST_MODE_called_at_frequency(void)
 {
     if(!joystick_at_rest) {
-        if(steps_increase) {
-            uint32_t goal = PEDOMETER_get_goal();
-            PEDOMETER_add_steps(step_change_per_call);
-            if(PEDOMETER_get_steps() > (goal-10)) {
-                PEDOMETER_set_steps(goal-10);
-            }
-        } else {
-            PEDOMETER_remove_steps(step_change_per_call);
-        }
+        add_or_subtract_steps(step_change_per_call);
     }
 }
 
@@ -46,8 +39,11 @@ void test_mode_joystick_state_change(
     JOYSTICK_State* old_state,
     JOYSTICK_State* new_state)
 {
+    static bool already_added_one = false;
     joystick_at_rest = new_state->y_at_rest;
-    if (!joystick_at_rest) {
+    if (joystick_at_rest) {
+        already_added_one = false;
+    } else {
         steps_increase = new_state->is_up;
         if (new_state->percent_y > JOYSTICK_ONE_CHANGE_THRESHOLD) {
             step_change_per_call = calculate_step_change(
@@ -55,9 +51,11 @@ void test_mode_joystick_state_change(
                 new_state->percent_y
             );
         } else {
-            // force a call so that steps are incremented up/down by 1
-            step_change_per_call = 1;
-            TEST_MODE_called_at_frequency();
+            if (!already_added_one) {
+                // only add 1 when changing from at rest to not at rest.
+                add_or_subtract_steps(1);
+                already_added_one = true;
+            }
 
             // force no later calls to update.
             joystick_at_rest = true;
@@ -76,6 +74,19 @@ void render_test_mode(char* display, size_t max_chars_length)
         PEDOMETER_get_steps(),
         PEDOMETER_get_goal()
     );
+}
+
+static void add_or_subtract_steps(uint32_t steps)
+{
+    if(steps_increase) {
+        uint32_t goal = PEDOMETER_get_goal();
+        PEDOMETER_add_steps(steps);
+        if(PEDOMETER_get_steps() > (goal-10)) {
+            PEDOMETER_set_steps(goal-10);
+        }
+    } else {
+        PEDOMETER_remove_steps(steps);
+    }
 }
 
 static uint32_t calculate_step_change(uint32_t goal, uint16_t joystick_percent)
