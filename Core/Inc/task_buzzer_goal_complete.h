@@ -5,12 +5,12 @@
  *      Author: jon27
  */
 
-#ifndef INC_TASK_BUZZER_H_
-#define INC_TASK_BUZZER_H_
+#ifndef INC_TASK_BUZZER_GOAL_COMPLETE_H_
+#define INC_TASK_BUZZER_GOAL_COMPLETE_H_
 
 
 void BUZZER_init(void);
 void BUZZER_execute(void);
 
 
-#endif /* INC_TASK_BUZZER_H_ */
+#endif /* INC_TASK_BUZZER_GOAL_COMPLETE_H_ */
