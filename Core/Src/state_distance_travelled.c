@@ -27,25 +27,22 @@ void toggle_distance_units(void)
 void render_distance_travelled(char* display, size_t max_chars_length)
 {
     Distance dist = calculate_current_distance();
-    int num_written = snprintf(
-        display,
-        max_chars_length,
-        "Distance\n"
-        "%lu.%02lu km",
-        dist.before_dot,
-        dist.after_dot
-    );
     if(unit_is_km) {
         snprintf(
-            display + num_written,
-            max_chars_length - num_written,
-            "km"
+            display,
+            max_chars_length,
+            "Distance\n"
+            "%lu.%02lu km",
+            dist.before_dot,
+            dist.after_dot
         );
     } else {
         snprintf(
-            display + num_written,
-            max_chars_length - num_written,
-            "yards"
+            display,
+            max_chars_length,
+            "Distance\n"
+            "%lu yards",
+            dist.before_dot
         );
     }
 }
@@ -61,7 +58,6 @@ static Distance calculate_current_distance(void)
         dist.after_dot = (dist_meters / 10) % 100;
     } else {
         dist.before_dot = (dist_meters * 10936) / 10000;
-        dist.after_dot = ((dist_meters * 10936) / 100) % 100;
     }
 
     return dist;
