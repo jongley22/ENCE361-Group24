@@ -8,6 +8,8 @@
 #include "state_goal_set.h"
 #include "state_test_mode.h"
 
+#include "task_buzzer_goal_complete.h"
+
 
 // states that display info
 static void to_current_steps(void);

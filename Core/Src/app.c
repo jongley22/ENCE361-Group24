@@ -14,7 +14,7 @@
 #include "task_led_blinking.h"
 #include "task_joystick_potentiometer.h"
 #include "task_display.h"
-#include "task_buzzer.h"
+#include "task_buzzer_goal_complete.h"
 #include "state_test_mode.h"
 #include "imu_lsm6ds.h"
 
