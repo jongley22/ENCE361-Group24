@@ -25,8 +25,9 @@ typedef enum {
 // Standard options
 #define CTRL1_XL_HIGH_PERFORMANCE 0xA0U
 #define INT1_STEP_DETECTOR_EN  0x80
-#define CTRL10_C_PEDO_EN  0x10  // bit 4
-#define CTRL10_C_FUNC_EN  0x04  // bit 2
+#define CTRL10_C_PEDO_ENABLE  0x10
+#define CTRL10_C_PEDO_RESET_COUNT  0x02
+#define CTRL10_C_FUNC_ENABLE  0x04
 
 void imu_lsm6ds_write_byte(imu_register_t register_address, uint8_t value);
 
