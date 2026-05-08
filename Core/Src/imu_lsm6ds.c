@@ -14,6 +14,7 @@
 // Hardware configuration
 #define spi_hal_handler hspi2
 
+
 void HAL_GPIO_EXTI_Rising_Callback(uint16_t GPIO_Pin)
 {
 	static uint16_t running_step_count = 0;
@@ -59,7 +60,6 @@ uint8_t imu_lsm6ds_read_byte(imu_register_t register_address)
 void imu_init(void)
 {
     imu_lsm6ds_write_byte(CTRL1_XL, CTRL1_XL_HIGH_PERFORMANCE);
+    imu_lsm6ds_write_byte(CTRL10_C, CTRL10_C_PEDO_ENABLE | CTRL10_C_PEDO_RESET_COUNT | CTRL10_C_FUNC_ENABLE);
     imu_lsm6ds_write_byte(INT1_CTRL, INT1_STEP_DETECTOR_EN);
-    imu_lsm6ds_write_byte(CTRL10_C, CTRL10_C_FUNC_EN);
-    imu_lsm6ds_write_byte(CTRL10_C, CTRL10_C_PEDO_EN);
 }
