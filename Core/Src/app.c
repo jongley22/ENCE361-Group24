@@ -31,7 +31,6 @@
 #define LED_STATUS_FREQUENCY_HZ 10
 
 
-
 // IMPORTANT:
 //
 // If this value is changed, you NEED to re-work through all
@@ -71,9 +70,9 @@ void app_main(void)
         BUZZER_FREQUENCY_HZ
     );
     SCHEDULER_add_task(
-            &LED_STATUS_init,
-            &LED_STATUS_execute,
-            LED_STATUS_FREQUENCY_HZ
+        &LED_STATUS_init,
+        &LED_STATUS_execute,
+        LED_STATUS_FREQUENCY_HZ
     );
     SCHEDULER_add_task(
         &TEST_MODE_called_at_frequency,

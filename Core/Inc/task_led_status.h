@@ -9,10 +9,8 @@
 #define INC_TASK_LED_STATUS_H_
 
 
-
 void LED_STATUS_init(void);
 void LED_STATUS_execute(void);
-
 
 
 #endif /* INC_TASK_LED_STATUS_H_ */

@@ -1,18 +1,15 @@
 #include "pwm.h"
 #include "rgb.h"
 #include "pedometer.h"
+#include "task_led_status.h"
+
 
 #define PWM_MAX_DUTY_CYCLE 100
 
-static void UP_LED_STATUS(void);
 
-void LED_STATUS_init(void)
-{
-    rgb_colour_all_on();
-    HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_3);
-}
+static void up_led_dutycycle(void);
 
-static void UP_LED_STATUS(void) {
+static void up_led_dutycycle(void) {
 	if (PEDOMETER_get_goal_percent() < 25){
 		// Assuming Max Duty_cycle is 100
 		uint8_t Duty_cycle = (PEDOMETER_get_goal_percent()*4);
@@ -21,6 +18,12 @@ static void UP_LED_STATUS(void) {
 		// turn on constantly
 	    pwm_setDutyCycle(&htim2, TIM_CHANNEL_3, PWM_MAX_DUTY_CYCLE);
 	}
+}
+
+void LED_STATUS_init(void)
+{
+    rgb_colour_all_on();
+    HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_3);
 }
 
 void LED_STATUS_execute(void)
