@@ -2,6 +2,10 @@
 
 #include "display_fsm.h"
 
+/*
+ * Include all of the functions used
+ * for the different states.
+ */
 #include "state_current_steps.h"
 #include "state_distance_travelled.h"
 #include "state_goal_progress.h"
@@ -11,16 +15,24 @@
 #include "task_buzzer_goal_complete.h"
 
 
-// states that display info
+/*
+ * states that display info and are
+ * reachable by joystick movements.
+ */
 static void to_current_steps(void);
 static void to_distance_travelled(void);
 static void to_goal_progress(void);
 
-// unusual states entered at other times
+/*
+ * Unusual states that can be entered by
+ * other less common actions.
+ */
 static void to_goal_set(void);
 static void to_test_mode(void);
 
-// state related binding functions
+/*
+ * Functions used to bind states together.
+ */
 static void save_goal_then_back(void);
 
 
@@ -32,11 +44,26 @@ void FSM_STATES_to_initial_state(void) {
     to_current_steps();
 }
 
+/*
+ * Used when you long press the joystick down on the goal set state.
+ */
 static void save_goal_then_back(void)
 {
     save_new_goal();
     to_goal_progress();
 }
+
+
+/*
+ * Below are the actual definitions of how the states behave.
+ *
+ * When an event occurs, the corrisponding function pointer
+ * is called for the current state. The functions below map
+ * which functions are called for different events. If a
+ * particular function pointer is not set, it defaults to
+ * NULL (meaning that event is ignored in that state).
+ */
+
 
 static void to_current_steps(void)
 {
