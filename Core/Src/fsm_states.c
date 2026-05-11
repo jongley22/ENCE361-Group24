@@ -24,6 +24,10 @@ static void to_test_mode(void);
 static void save_goal_then_back(void);
 
 
+/*
+ * Go to the starting state. This is called by app.c on program
+ * start to set 'display_fsm' to a working state.
+ */
 void FSM_STATES_to_initial_state(void) {
     to_current_steps();
 }

@@ -31,6 +31,10 @@ static Task tasks[MAX_NUM_TASKS];
 static void init_tasks(void);
 
 
+/*
+ * Add a task to the scheduler. This is used at
+ * program initialization.
+ */
 void SCHEDULER_add_task(
     void(*init_func)(void),
     void(*execute_func)(void),
@@ -44,6 +48,10 @@ void SCHEDULER_add_task(
     num_tasks ++;
 }
 
+/*
+ * Run the task scheduler. This function blocks
+ * forever with a while(1) loop.
+ */
 void SCHEDULER_run_tasks(void)
 {
     init_tasks();

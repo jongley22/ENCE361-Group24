@@ -1,8 +1,10 @@
 /*
- * task_led_blinking.h
+ * task_buzzer_goal_complete.h
  *
- *  Created on: 24/02/2026
- *      Author: jon27
+ * Checks if the current steps is greater than the current
+ * goal. If it is, the buzzer starts buzzing and the display
+ * FSM is changed to a state telling the user that the
+ * goal is completed.
  */
 
 #ifndef INC_TASK_BUZZER_GOAL_COMPLETE_H_

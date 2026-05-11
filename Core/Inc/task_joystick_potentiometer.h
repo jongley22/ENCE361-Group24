@@ -1,8 +1,9 @@
 /*
- * task_button_polling.h
+ * task_joystick_potentiometer.h
  *
- *  Created on: 24/02/2026
- *      Author: jon27
+ * This module handles reading the analog joystick and potentiometer
+ * values from the ADC. Having both of these values in the same
+ * module means that there is only one module reading the ADC.
  */
 
 #ifndef INC_TASK_JOYSTICK_POT_H_
@@ -13,6 +14,11 @@
 #include <stdbool.h>
 
 
+/*
+ * This structure is passed into the
+ * current display_fsm state when the
+ * joystick changes position.
+ */
 typedef struct {
     uint16_t percent_x;
     uint16_t percent_y;
@@ -28,6 +34,12 @@ typedef struct {
 
 
 void JOYPOT_init(void);
+
+/*
+ * Read the joystick and potentiometer values. Then
+ * decide what functions need to be called
+ * in 'display_fsm'.
+ */
 void JOYPOT_execute(void);
 
 

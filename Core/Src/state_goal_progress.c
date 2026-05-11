@@ -5,6 +5,9 @@
 #include <stdio.h>
 
 
+/*
+ * Draw the goal progress screen by filling in the 'display' array.
+ */
 void render_goal_progress(char* display, size_t max_chars_length)
 {
     snprintf(

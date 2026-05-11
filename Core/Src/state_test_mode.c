@@ -23,6 +23,15 @@ static uint32_t calculate_step_change(uint32_t goal, uint16_t joystick_percent);
 static void add_or_subtract_steps(uint32_t steps);
 
 
+/*
+ * This function is called from the task
+ * scheduler. This function will increment
+ * the current steps value up or down
+ * depending on the joystick position. If
+ * the joystick is at reset or the test
+ * mode screen is not active, this
+ * function will do nothing.
+ */
 void TEST_MODE_called_at_frequency(void)
 {
     if(!joystick_at_rest) {
@@ -30,11 +39,26 @@ void TEST_MODE_called_at_frequency(void)
     }
 }
 
+/*
+ * This function is called when the test mode screen
+ * exits. It is needed so that
+ * the 'TEST_MODE_called_at_frequency' function
+ * will stop incrementing the current steps when
+ * if test mode is exitted when the joystick is
+ * held up or down.
+ */
 void on_test_mode_exit(void)
 {
     joystick_at_rest = true; // make sure step count isn't changing
 }
 
+/*
+ * This function is called when the joystick is
+ * moved. It calculates the
+ * amount 'TEST_MODE_called_at_frequency' should
+ * increment (or decrement) the current
+ * steps each call.
+ */
 void test_mode_joystick_state_change(
     JOYSTICK_State* old_state,
     JOYSTICK_State* new_state)
@@ -63,6 +87,9 @@ void test_mode_joystick_state_change(
     }
 }
 
+/*
+ * Draw the test mode string in the 'display' array.
+ */
 void render_test_mode(char* display, size_t max_chars_length)
 {
     snprintf(

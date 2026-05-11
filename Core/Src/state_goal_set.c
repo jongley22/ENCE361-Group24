@@ -19,16 +19,27 @@ static uint32_t new_goal = POT_GOAL_MIN;
 static uint32_t calc_goal_from_pot(uint16_t current_pot);
 
 
+/*
+ * Set the actual goal in the 'pedometer' module to the 'new' goal.
+ */
 void save_new_goal(void)
 {
     PEDOMETER_set_goal(new_goal);
 }
 
+/*
+ * Set the 'new' goal from the current potentiometer
+ * value. The 'new' goal is not set until
+ * the 'save_new_goal' function is called.
+ */
 void set_goal_from_pot(uint16_t* old_pot, uint16_t* current_pot)
 {
     new_goal = calc_goal_from_pot(*current_pot);
 }
 
+/*
+ * Draw the goal set screen to the 'display' array.
+ */
 void render_goal_set(char* display, size_t max_chars_length)
 {
     snprintf(

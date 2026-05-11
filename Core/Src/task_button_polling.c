@@ -43,6 +43,11 @@ void BUTTON_POLLING_init(void)
     HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_3);
 }
 
+/*
+ * Poll all of the buttons on the system. For
+ * all clicked buttons, call the functions
+ * in 'display_fsm.c'.
+ */
 void BUTTON_POLLING_execute(void)
 {
     buttons_update();

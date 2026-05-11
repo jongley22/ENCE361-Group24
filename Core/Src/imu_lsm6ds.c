@@ -57,6 +57,10 @@ uint8_t imu_lsm6ds_read_byte(imu_register_t register_address)
     return rx[0];
 }
 
+/*
+ * Use write_byte above to start the IMU counting
+ * steps and triggering interrupts.
+ */
 void imu_init(void)
 {
     imu_lsm6ds_write_byte(CTRL1_XL, CTRL1_XL_HIGH_PERFORMANCE);

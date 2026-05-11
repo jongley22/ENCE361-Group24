@@ -27,6 +27,10 @@ static void write_line(char* line, uint16_t pos);
 static void write_lines(char* chars);
 
 
+/*
+ * Call the 'display_fsm' function to get a string
+ * for the current screen to display.
+ */
 void DISPLAY_execute(void)
 {
     char chars[MAX_CHARS_LENGTH];

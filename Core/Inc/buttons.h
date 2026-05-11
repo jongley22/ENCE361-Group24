@@ -8,6 +8,9 @@
 // ENCE361 sample code.
 // The buttons are UP and DOWN plus LEFT and RIGHT.
 //
+// This code has been modified to also include the
+// joystick down press button (JOYSTICK_CLICK).
+//
 // Created by P.J. Bones, UC ECE
 // Updated by Le Yang & F. Youssif, UC ECE.
 // Last modified:  15/01/2025
