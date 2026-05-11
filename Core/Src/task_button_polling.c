@@ -11,9 +11,8 @@
 #include "pedometer.h"
 
 #include "buttons.h"
-#include "rgb.h"
 #include "tim.h"
-#include "pwm.h"
+
 
 #include <stm32c0xx_hal.h>
 #include <stdlib.h>
@@ -31,41 +30,29 @@
 
 
 static void down_double_tap_logic(void);
-static void check_a_button(buttonName_t button_name, rgb_led_t rgb_name);
-static void led_pwm_increase(void);
+static void check_a_button(buttonName_t button_name);
 static void manage_joystick_push_logic(void);
 
 
 void BUTTON_POLLING_init(void)
 {
     buttons_init();
-    rgb_colour_all_on();
-    HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_3);
 }
 
 void BUTTON_POLLING_execute(void)
 {
     buttons_update();
-    check_a_button(DOWN, RGB_DOWN);
-    check_a_button(LEFT, RGB_LEFT);
-    check_a_button(RIGHT, RGB_RIGHT);
-
-    if (buttons_checkButton(UP) == PUSHED) {
-        led_pwm_increase();
-    }
+    check_a_button(DOWN);
+    check_a_button(LEFT);
+    check_a_button(RIGHT);
 
     manage_joystick_push_logic();
 }
 
-static void check_a_button(buttonName_t button_name, rgb_led_t rgb_name)
+static void check_a_button(buttonName_t button_name)
 {
     buttonState_t state = buttons_checkButton(button_name);
 
-    if (state == PUSHED) {
-        rgb_led_on(rgb_name);
-    } else if (state == RELEASED) {
-        rgb_led_off(rgb_name);
-    }
 
     if (button_name == DOWN) {
         if (state == PUSHED)
@@ -77,16 +64,6 @@ static void check_a_button(buttonName_t button_name, rgb_led_t rgb_name)
             PEDOMETER_add_steps(SW4_STEPS_INCREMENT);
         }
     }
-}
-
-static void led_pwm_increase(void)
-{
-    uint8_t dutyCycle = pwm_getDutyCycle(&htim2, TIM_CHANNEL_3);
-    dutyCycle += PWM_ADD_DUTY_CYCLE;
-    if (dutyCycle > PWM_MAX_DUTY_CYCLE) {
-        dutyCycle = 0;
-    }
-    pwm_setDutyCycle(&htim2, TIM_CHANNEL_3, dutyCycle);
 }
 
 static void down_double_tap_logic(void)

@@ -15,6 +15,7 @@
 #include "task_joystick_potentiometer.h"
 #include "task_display.h"
 #include "task_buzzer_goal_complete.h"
+#include "task_led_status.h"
 #include "state_test_mode.h"
 #include "imu_lsm6ds.h"
 
@@ -27,6 +28,8 @@
 #define JOYSTICK_FREQUENCY_HZ 50
 #define DISPLAY_FREQUENCY_HZ 4
 #define BUZZER_FREQUENCY_HZ 2
+#define LED_STATUS_FREQUENCY_HZ 10
+
 
 
 // IMPORTANT:
@@ -66,6 +69,11 @@ void app_main(void)
         &BUZZER_init,
         &BUZZER_execute,
         BUZZER_FREQUENCY_HZ
+    );
+    SCHEDULER_add_task(
+            &LED_STATUS_init,
+            &LED_STATUS_execute,
+            LED_STATUS_FREQUENCY_HZ
     );
     SCHEDULER_add_task(
         &TEST_MODE_called_at_frequency,
