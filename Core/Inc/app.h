@@ -1,8 +1,7 @@
 /*
  * app.h
  *
- *  Created on: 24/02/2026
- *      Author: jon27
+ * Manages starting the system and initializing the task scheduler.
  */
 
 #ifndef INC_APP_H_

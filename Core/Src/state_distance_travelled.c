@@ -19,11 +19,20 @@ static bool unit_is_km = true;
 static Distance calculate_current_distance(void);
 
 
+/*
+ * Toggle the units of distance between kilometers and
+ * yards. Kilometers is displayed as a decimal and
+ * yards are displayed to whole integers.
+ */
 void toggle_distance_units(void)
 {
     unit_is_km = !unit_is_km;
 }
 
+/*
+ * Render the distance travelled screen by
+ * filling in the 'display' array.
+ */
 void render_distance_travelled(char* display, size_t max_chars_length)
 {
     Distance dist = calculate_current_distance();

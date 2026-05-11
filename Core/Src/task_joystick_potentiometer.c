@@ -54,6 +54,11 @@ void JOYPOT_init(void)
     current_pot = 0;
 }
 
+/*
+ * Read the joystick and potentiometer values. Then
+ * decide what functions need to be called
+ * in 'display_fsm'.
+ */
 void JOYPOT_execute(void)
 {
     HAL_ADC_Start_DMA(&hadc1, (uint32_t*)raw_adc, 3);

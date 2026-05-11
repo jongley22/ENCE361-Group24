@@ -8,7 +8,9 @@
 #ifndef INC_IMU_LSM6DS_H_
 #define INC_IMU_LSM6DS_H_
 
+
 #include <stdint.h>
+
 
 typedef enum {
 	CTRL1_XL = 0x10,
@@ -24,6 +26,7 @@ typedef enum {
 	STEP_COUNTER_H = 0x4C,
 } imu_register_t;
 
+
 // Standard options
 #define CTRL1_XL_HIGH_PERFORMANCE 0xA0U
 #define INT1_STEP_DETECTOR_EN  0x80
@@ -31,10 +34,14 @@ typedef enum {
 #define CTRL10_C_PEDO_RESET_COUNT  0x02
 #define CTRL10_C_FUNC_ENABLE  0x04
 
-void imu_lsm6ds_write_byte(imu_register_t register_address, uint8_t value);
 
+void imu_lsm6ds_write_byte(imu_register_t register_address, uint8_t value);
 uint8_t imu_lsm6ds_read_byte(imu_register_t register_address);
 
+/*
+ * Use write_byte above to start the IMU counting
+ * steps and triggering interrupts.
+ */
 void imu_init(void);
 
 #endif /* INC_IMU_LSM6DS_H_ */

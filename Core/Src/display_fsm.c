@@ -15,6 +15,11 @@ static void trigger_func(void(*func)(void));
 static void save_previous_state(void);
 
 
+/*
+ * Create a new blank state, return it and switch
+ * the display FSM to this state. The function
+ * calling this one should fill in the returned state.
+ */
 DISP_FSM_State* DISP_FSM_to_new_state(void)
 {
     trigger_func(current_state.on_state_exit);
@@ -36,6 +41,11 @@ DISP_FSM_State* DISP_FSM_to_new_state(void)
     return &current_state;
 }
 
+/*
+ * Navigate the display fsm to the previous state. This can
+ * be used, for example, to exit test mode or stop showing
+ * the goal completed screen.
+ */
 void DISP_FSM_to_previous_state(void)
 {
     trigger_func(current_state.on_state_exit);
@@ -47,22 +57,37 @@ void DISP_FSM_to_previous_state(void)
     }
 }
 
+/*
+ * Called when joystick middle button is pressed for less than 1 second.
+ */
 void DISP_FSM_trig_joystick_short_press(void)
 {
     trigger_func(current_state.joystick_short_press);
 }
 
+/*
+ * Called for more than 1 second.
+ */
 void DISP_FSM_trig_joystick_long_press(void)
 {
     trigger_func(current_state.joystick_long_press);
 }
 
+/*
+ * Called when SW2 is quickly double-tapped. On
+ * most (but not all) states, this enters test mode.
+ */
 void DISP_FSM_trig_button_test_tap(void)
 {
     trigger_func(current_state.button_test_tap);
 }
 
-void DISP_FSM_trig_joystick_change_state(JOYSTICK_State* old_state, JOYSTICK_State* new_state)
+/*
+ * Called every single time the joystick changes position.
+ */
+void DISP_FSM_trig_joystick_change_state(
+    JOYSTICK_State* old_state,
+    JOYSTICK_State* new_state)
 {
     if (!old_state->at_max && new_state->at_max) {
         if (new_state->x_at_max) {
@@ -86,6 +111,11 @@ void DISP_FSM_trig_joystick_change_state(JOYSTICK_State* old_state, JOYSTICK_Sta
     }
 }
 
+/*
+ * Called every time the potentiometer changes. old_pot
+ * and new_pot can be used to calculate the direction
+ * or speed of change if needed.
+ */
 void DISP_FSM_trig_potentiometer_change(uint16_t* old_pot, uint16_t* new_pot)
 {
     if (current_state.potentiometer_change != NULL) {
@@ -93,6 +123,12 @@ void DISP_FSM_trig_potentiometer_change(uint16_t* old_pot, uint16_t* new_pot)
     }
 }
 
+/*
+ * Called whenever the 'task_display' runs. The
+ * parameter 'characters' should have a string
+ * written to it. This string will then be
+ * written to the display.
+ */
 void DISP_FSM_get_display_chars(char* characters, size_t max_chars_length)
 {
     if (current_state.get_display_chars != NULL) {

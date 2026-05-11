@@ -72,5 +72,6 @@ void app_main(void)
         &TEST_MODE_called_at_frequency,
         TEST_MODE_FREQUENCY_HZ
     );
+
     SCHEDULER_run_tasks();
 }
