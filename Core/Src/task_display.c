@@ -77,6 +77,7 @@ static void write_lines(char* chars)
             str_pos ++;
         }
     }
+
     current_line[str_pos] = '\0';
     write_line(current_line, display_pos);
 
