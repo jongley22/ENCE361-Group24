@@ -111,6 +111,12 @@ void render_test_mode(char* display, size_t max_chars_length)
     );
 }
 
+/*
+ * When called, this function uses 'steps_increase' to
+ * choose whether to add or subtract the given step
+ * value. This function also makes sure you cannot
+ * exceed 10 steps less than the goal.
+ */
 static void add_or_subtract_steps(uint32_t steps)
 {
     if(steps_increase) {
