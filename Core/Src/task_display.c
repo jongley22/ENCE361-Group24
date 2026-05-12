@@ -50,6 +50,10 @@ static void write_line(char* line, uint16_t pos)
     ssd1306_WriteString(line, Font_7x10, White);
 }
 
+/*
+ * 'chars' is an array of lines separated by '\n'. This
+ * must be null-terminated.
+ */
 static void write_lines(char* chars)
 {
     ssd1306_Fill(Black);
@@ -59,6 +63,8 @@ static void write_lines(char* chars)
 
     uint16_t display_pos = 0;
     size_t str_pos = 0;
+
+    // Loop through the 'chars' array looking for the line separations.
     for(size_t i=0; chars[i] != '\0'; i++) {
         if(chars[i] == '\n') {
             current_line[str_pos] = '\0';
