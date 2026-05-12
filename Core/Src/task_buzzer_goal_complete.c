@@ -33,6 +33,10 @@ static void stop_buzzing_if_needed(void);
 static void to_goal_completed_screen(void);
 
 
+/*
+ * The task scheduler requires an init & execute function for every task.
+ * If we need to initialise for button in future this can be used.w
+ */
 void BUZZER_init(void)
 {
 }
@@ -47,6 +51,9 @@ void BUZZER_execute(void)
     }
 }
 
+/*
+ * Goal complete screen styled and made.
+ */
 void render_goal_completed(char* display, size_t max_chars_length)
 {
     snprintf(
@@ -60,6 +67,9 @@ void render_goal_completed(char* display, size_t max_chars_length)
     );
 }
 
+/*
+ * This also affects the screen shown if needed.
+ */
 static void start_buzzing_if_needed(void)
 {
     if (PEDOMETER_get_steps() >= PEDOMETER_get_goal()) {
@@ -72,6 +82,9 @@ static void start_buzzing_if_needed(void)
     }
 }
 
+/*
+ * Resets the screen.
+ */
 static void stop_buzzing_if_needed(void)
 {
     if (buzzing_tick_count > BUZZER_DURATION_TICKS) {
@@ -92,6 +105,9 @@ static void buzzer_stop(void)
     buzzing_now = false;
 }
 
+/*
+ * Goal complete screen called, when step count exceeds goal.
+ */
 static void to_goal_completed_screen(void)
 {
     DISP_FSM_State* state = DISP_FSM_to_new_state();
