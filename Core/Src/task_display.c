@@ -1,8 +1,9 @@
 /*
  * task_display.c
  *
- *  Created on: 10/03/2026
- *      Author: jon27
+ * Every time this task is executed, 'DISP_FSM_get_display_chars' is
+ * called. The text returned from this function is then written to
+ * the display by this module.
  */
 
 #include "task_display.h"

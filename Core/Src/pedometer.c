@@ -1,3 +1,11 @@
+/*
+ * pedometer.c
+ *
+ * Stores the current step count and current goal. Also
+ * provides functions to calculate information from these
+ * values (such as goal percentage).
+ */
+
 #include "pedometer.h"
 
 

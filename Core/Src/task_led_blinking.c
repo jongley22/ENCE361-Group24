@@ -1,8 +1,8 @@
 /*
  * task_led_blinking.c
  *
- *  Created on: 10/03/2026
- *      Author: jon27
+ * A task to blink the builtin LED so you can easily
+ * tell when the task scheduler is working.
  */
 
 #include "task_led_blinking.h"

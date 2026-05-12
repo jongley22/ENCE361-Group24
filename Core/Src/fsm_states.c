@@ -1,3 +1,9 @@
+/*
+ * fsm_states.c
+ *
+ * Defines the states for this particular project.
+ */
+
 #include "fsm_states.h"
 
 #include "display_fsm.h"

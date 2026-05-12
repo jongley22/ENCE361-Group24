@@ -1,3 +1,9 @@
+/*
+ * state_current_steps.c
+ *
+ * The FSM state for the current steps screen.
+ */
+
 #include "state_current_steps.h"
 
 #include "pedometer.h"

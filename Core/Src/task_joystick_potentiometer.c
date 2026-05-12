@@ -1,8 +1,9 @@
 /*
- * task_joystick.c
+ * task_joystick_potentiometer.c
  *
- *  Created on: 10/03/2026
- *      Author: jon27
+ * This module handles reading the analog joystick and potentiometer
+ * values from the ADC. Having both of these values in the same
+ * module means that there is only one module reading the ADC.
  */
 
 #include "task_joystick_potentiometer.h"
