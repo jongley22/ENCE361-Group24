@@ -62,6 +62,10 @@ void render_distance_travelled(char* display, size_t max_chars_length)
     }
 }
 
+/*
+ * Returning distance traveled, getting PEDOMETER current steps
+ * Using .8 meter step size, distance kilometers and meters displayed separately
+ */
 static Distance calculate_current_distance(void)
 {
     uint32_t dist_meters = ((PEDOMETER_get_steps() * 80) / 100);
