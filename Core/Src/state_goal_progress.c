@@ -1,3 +1,9 @@
+/*
+ * state_goal_progress.c
+ *
+ * The FSM state for the goal progress screen.
+ */
+
 #include "state_goal_progress.h"
 
 #include "pedometer.h"

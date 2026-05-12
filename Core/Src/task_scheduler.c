@@ -1,8 +1,9 @@
 /*
  * task_scheduler.c
  *
- *  Created on: 24/02/2026
- *      Author: jon27
+ * A time-based task scheduler implementation using the free-running
+ * timer. Every task can have an independant frequency, but the
+ * frequency of a task cannot be changed at runtime.
  */
 
 #include "task_scheduler.h"
@@ -68,6 +69,10 @@ void SCHEDULER_run_tasks(void)
     }
 }
 
+/*
+ * Goes through all the tasks, calls their init functions
+ * Also figures out when to next be called.
+ */
 static void init_tasks(void)
 {
     for (Task* task=tasks; task<tasks+num_tasks; task++) {

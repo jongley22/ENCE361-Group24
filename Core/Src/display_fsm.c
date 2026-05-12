@@ -1,11 +1,23 @@
+/*
+ * display_fsm.c
+ *
+ * Defines a state machine for the display.
+ */
+
 #include "display_fsm.h"
 
 
+/*
+ * Used to size the previous_states array. If
+ * you try to go back more than 10 times
+ * using 'DISP_FSM_to_previous_state', this
+ * will result in undefined behaviour.
+ */
 #define NUM_PREVIOUS_STATES 10
 
 
 static DISP_FSM_State current_state = {
-    .on_state_exit = NULL // make sure exit function is not called
+    .on_state_exit = NULL  // make sure exit function is not called
 };
 
 static DISP_FSM_State previous_states[NUM_PREVIOUS_STATES];
@@ -89,7 +101,10 @@ void DISP_FSM_trig_joystick_change_state(
     JOYSTICK_State* old_state,
     JOYSTICK_State* new_state)
 {
+    // Check if joystick has just reached maximum position.
     if (!old_state->at_max && new_state->at_max) {
+        // Figure out whether to call up, down, left or right.
+
         if (new_state->x_at_max) {
             if (new_state->is_left) {
                 trigger_func(current_state.joystick_left);
@@ -136,6 +151,15 @@ void DISP_FSM_get_display_chars(char* characters, size_t max_chars_length)
     }
 }
 
+/*
+ * When an event occurs and a function in the current
+ * state needs to be called, this function is used to
+ * call that function pointer. Because not all
+ * functions are used in every state (such as
+ * potentiometer being ignored in current steps
+ * screen), this function only calls the pointer
+ * if it is not NULL.
+ */
 static void trigger_func(void(*func)(void))
 {
     if (func != NULL) {
@@ -143,6 +167,12 @@ static void trigger_func(void(*func)(void))
     }
 }
 
+/*
+ * Add to the previous_states array the current
+ * state. This is used so that
+ * the 'DISP_FSM_to_previous_state' function
+ * has states to roll back to.
+ */
 static void save_previous_state(void)
 {
     // shift everything to the right, making 0 empty

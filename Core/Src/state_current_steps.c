@@ -1,3 +1,9 @@
+/*
+ * state_current_steps.c
+ *
+ * The FSM state for the current steps screen.
+ */
+
 #include "state_current_steps.h"
 
 #include "pedometer.h"
@@ -6,6 +12,10 @@
 #include <stdio.h>
 
 
+/*
+ * When true, unit is percent of goal. When
+ * false, unit is number of steps.
+ */
 static bool unit_is_percent = false;
 
 
