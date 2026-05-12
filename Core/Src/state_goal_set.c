@@ -19,6 +19,9 @@
 #define POT_ADC_MAX         3900U
 
 
+/*
+ * Stores the calculated goal from the current potentiometer reading.
+ */
 static uint32_t new_goal = POT_GOAL_MIN;
 
 
@@ -59,6 +62,13 @@ void render_goal_set(char* display, size_t max_chars_length)
     );
 }
 
+/*
+ * Take in a potentiometer reading and calculate
+ * the goal value associated with it.
+ *
+ * This is called whenever the potentiometer
+ * is moved (ie. changes value).
+ */
 static uint32_t calc_goal_from_pot(uint16_t current_pot)
 {
     if (current_pot < POT_ADC_MIN) {
