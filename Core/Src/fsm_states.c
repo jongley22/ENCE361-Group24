@@ -2,6 +2,8 @@
  * fsm_states.c
  *
  * Defines the states for this particular project.
+ *
+ * For information on how the state machine works, see 'display_fsm.c'
  */
 
 #include "fsm_states.h"
