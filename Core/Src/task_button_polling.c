@@ -54,6 +54,9 @@ void BUTTON_POLLING_execute(void)
     manage_joystick_push_logic();
 }
 
+/*
+ * Board buttons, going to test mode and incrementing 7 steps.
+ */
 static void check_a_button(buttonName_t button_name)
 {
     buttonState_t state = buttons_checkButton(button_name);
@@ -71,6 +74,9 @@ static void check_a_button(buttonName_t button_name)
     }
 }
 
+/*
+ * Enter test mode
+ */
 static void down_double_tap_logic(void)
 {
     static uint32_t down_last_press_time = 0;
@@ -84,6 +90,9 @@ static void down_double_tap_logic(void)
     }
 }
 
+/*
+ * Entering goal change state and exiting with/without saving goal change
+ */
 static void manage_joystick_push_logic(void)
 {
     static bool joystick_clicked = false;
