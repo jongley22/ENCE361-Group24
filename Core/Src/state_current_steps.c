@@ -12,6 +12,10 @@
 #include <stdio.h>
 
 
+/*
+ * When true, unit is percent of goal. When
+ * false, unit is number of steps.
+ */
 static bool unit_is_percent = false;
 
 
