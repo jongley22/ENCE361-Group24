@@ -1,3 +1,9 @@
+/*
+ * state_goal_set.c
+ *
+ * The FSM state for the goal set screen.
+ */
+
 #include "state_goal_set.h"
 
 #include "pedometer.h"

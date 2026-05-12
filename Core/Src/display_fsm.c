@@ -1,3 +1,9 @@
+/*
+ * display_fsm.c
+ *
+ * Defines a state machine for the display.
+ */
+
 #include "display_fsm.h"
 
 

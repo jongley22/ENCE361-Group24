@@ -1,8 +1,9 @@
 /*
  * task_button_polling.c
  *
- *  Created on: 10/03/2026
- *      Author: jon27
+ * Handles polling the user buttons. When a button is
+ * clicked, the 'display_fsm' state machine is notified
+ * so it can pass the event to the current state.
  */
 
 #include "task_button_polling.h"

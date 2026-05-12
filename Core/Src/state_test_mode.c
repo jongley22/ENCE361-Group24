@@ -1,3 +1,11 @@
+/*
+ * state_test_mode.c
+ *
+ * The FSM state for the test mode screen.
+ *
+ * This also has a task called from the task scheduler.
+ */
+
 #include "state_test_mode.h"
 
 #include "pedometer.h"

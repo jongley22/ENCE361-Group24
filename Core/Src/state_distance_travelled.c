@@ -1,3 +1,9 @@
+/*
+ * state_distance_travelled.c
+ *
+ * The FSM state for the distance travelled screen.
+ */
+
 #include "state_distance_travelled.h"
 
 #include "pedometer.h"
