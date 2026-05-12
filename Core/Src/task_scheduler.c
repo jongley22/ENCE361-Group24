@@ -69,6 +69,10 @@ void SCHEDULER_run_tasks(void)
     }
 }
 
+/*
+ * Goes through all the tasks, calls their init functions
+ * Also figures out when to next be called.
+ */
 static void init_tasks(void)
 {
     for (Task* task=tasks; task<tasks+num_tasks; task++) {
